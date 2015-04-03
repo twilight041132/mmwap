@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="demo.css">	
+	<link rel="shortcut icon" href="http://mm.10086.cn/favicon.ico" mce_href="http://mm.10086.cn/favicon.ico" type="image/x-icon">
+    <title>MM客户端WAP调起</title>
+</head>
+<body>
+<div>
+	<h2>WAP调起</h2>
+<hr style='width:100%'/>
+<div id="navsecond">
+	<div id="course">
+		<ul>
+		<li class="currentLink"><a style='cursor:pointer;text-decoration:underline' href="demo.html" title="WAP调起">WAP调起DEMO(应用详情展示浏览器名称)</a></li>
+		<li class="currentLink"><a style='cursor:pointer;text-decoration:underline' href="demo2.html" title="WAP调起">WAP调起DEMO(应用详情不展示浏览器名称)</a></li>
+		</ul>
+	</div>
+</div>
+</div>
+<br />
+<br />
+<div >
+ <h2>WAP调起客户端API</h2>
+ <hr style='width:100%'/>
+
+<table class="dataintable" >
+<tbody><tr><th width="90">步骤</th><th style="width: auto;">说明</th><th style="width: auto;">代码示例</th>
+
+<tr>
+<td>
+	1.导入JS
+</td>
+<td>
+<pre>
+导入MM WAP调起JavaScript代码
+</pre>
+</td>
+<td>
+<pre>
+&lt;script type="text/javascript" src="http://a.10086.cn/c/mmapp.js" charset="utf-8" &gt;&lt;/script&gt;
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+2.初始化配置
+</td>
+<td>
+<pre>
+调用MM客户端展示指定应用详情页面，可通过showtitle配置MM详情页标题栏显示的浏览器名称，showtitle设置为false表示不显示，不设置或者设置为true表示显示；
+通过channelid配置渠道ID，配置的channelid需要保证有对应的MM包下载，不配置的时候为默认渠道ID（5410093632）。代码在加载mmapp.js后执行;
+
+</pre>
+</td>
+<td>
+<pre>
+&lt;script&gt;  	
+mm.init({
+	showtitle:是否显示,
+	channelid:渠道ID 
+})
+&lt;script&gt;
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+	3.应用下载
+</td>
+<td>
+<pre>
+按钮添加触发事件mm.download(应用ID)，调用MM客户端下载指定应用
+</pre>
+</td>
+<td>
+<pre>
+&lt;a onclick="mm.download(应用ID)" &gt;下载应用&lt;/a&gt;
+</pre>
+</td>
+</tr>
+
+<tr>
+
+
+
+<tr>
+<td>
+3.应用详情
+</td>
+<td>
+<pre>
+按钮添加触发事件mm.detail(应用ID)，调用MM客户端展示指定应用详情页面
+</pre>
+</td>
+<td>
+<pre>
+&lt;a onclick="mm.detail(应用ID)" &gt;应用详情&lt;/a&gt;
+</pre>
+</td>
+</tr>
+
+
+
+</tbody></table>
+
+</div>
+<br />
+<br />
+
+</body>
+</html>
