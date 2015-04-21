@@ -51,7 +51,7 @@
 </td>
 <td>
 <pre>
-调用MM客户端展示指定应用详情页面，可通过showtitle配置MM详情页标题栏显示的浏览器名称，showtitle设置为false表示不显示，不设置或者设置为true表示显示；
+调用MM客户端展示指定应用详情页面，可通过showtitle配置MM详情页标题栏显示的浏览器名称，showtitle设置为false表示不显示，不设置或者设置为true表示显示；<br/>
 通过channelid配置渠道ID，配置的channelid需要保证有对应的MM包下载，不配置的时候为默认渠道ID（5410093632）。代码在加载mmapp.js后执行;
 
 </pre>
@@ -60,8 +60,8 @@
 <pre>
 &lt;script&gt;  	
 mm.init({
-	showtitle:是否显示,
-	channelid:渠道ID 
+	showtitle:true,//true：显示；false：隐藏
+	channelid:5410093632 //a.l0086.cn 默认使用渠道ID：5410093632
 })
 &lt;script&gt;
 </pre>
@@ -105,6 +105,25 @@ mm.init({
 </tr>
 
 
+<tr>
+<td>
+3.应用批量下载
+</td>
+<td>
+<pre>
+js调用mm.batchDownload(应用ID列表)触发应用批量下载,应用ID列表格式可以是字符串或数组。<br/>
+字符串格式：使用"/"分割列表ID，eg:"应用ID1/应用ID2/..."<br/>
+数组格式：把应用ID列表按数组存储即可，eg:[应用ID1,应用ID2,...]
+</pre>
+</td>
+<td>
+<pre>
+
+mm.batchDownload("/300002784578/300002457498")
+
+</pre>
+</td>
+</tr>
 
 </tbody></table>
 
@@ -112,5 +131,33 @@ mm.init({
 <br />
 <br />
 
+<div>
+	<h2>WAP调起API提供的参数配置说明</h2>
+	<hr style='width:100%'/>
+<p>可配置参数：</p>
+<pre>
+batchMaxApps:"15" ;//批量下载最大应用数，默认15，目前客户端最多支持15个应用下载
+showtitle:true ;//调起客户端，在客户端显示调起端浏览器名字，默认显示
+channelid:'5410093632';//渠道ID设置，a.l0086.cn 默认使用渠道ID：5410093632
+onIntent:true;//端口激活客户端失败，默认启用intent调起
+reCall:2000;//端口激活客户端失败,启用intent调起之后，默认2秒后执行用户操作
+lockTime:2000;//intent调起的时间锁，默认2秒内只能进行一次intent调起
+</pre>
+<p>参数配置方法，不配置都是用默认值：</p>
+<p>1.通过初始化配置</p>
+<pre>
+	mm.init({
+		showtitle:true,
+		channelid:'5410093632',
+		onIntent:true,
+		reCall:2000,
+		lockTime:2000
+	})
+</pre>
+<p>2.通过set方法配置</p>
+<pre>
+	mm.set("参数名",参数值);
+	举例，设置channelid:mm.set("channelid",'5410093632');
+</pre>
 </body>
 </html>
