@@ -10,23 +10,21 @@
 <body>
 <div>
 	<h2>WAP调起</h2>
-<hr style='width:100%'/>
-<div id="navsecond">
-	<div id="course">
-		<ul>
-		<li class="currentLink"><a style='cursor:pointer;text-decoration:underline' href="demo.html" title="WAP调起">WAP调起DEMO(应用详情展示浏览器名称)</a></li>
-		<li class="currentLink"><a style='cursor:pointer;text-decoration:underline' href="demo2.html" title="WAP调起">WAP调起DEMO(应用详情不展示浏览器名称)</a></li>
-		</ul>
-	</div>
+	<hr />
+	<ul>
+		<li><a href="#version" class="domlink">历史版本</a></li>
+		<li><a href="#api_detail" class="domlink">WAP调起客户端API</a></li>
+		<li><a  href="demo.html" class="domlink" title="WAP调起">WAP调起DEMO</a></li>
+	</ul>
 </div>
-</div>
-<br />
 <br />
 <div >
- <h2>WAP调起客户端API</h2>
- <hr style='width:100%'/>
+ <h2><a name="api_detail" class="domlink">WAP调起客户端API</a></h2>
+ 
+ <hr />
 
-<table class="dataintable" >
+ <div class="subcontent">
+ 	<table class="dataintable" >
 <tbody><tr><th width="90">步骤</th><th style="width: auto;">说明</th><th style="width: auto;">代码示例</th>
 
 <tr>
@@ -51,8 +49,8 @@
 </td>
 <td>
 <pre>
-调用MM客户端展示指定应用详情页面，可通过showtitle配置MM详情页标题栏显示的浏览器名称，showtitle设置为false表示不显示，不设置或者设置为true表示显示；<br/>
-通过channelid配置渠道ID，配置的channelid需要保证有对应的MM包下载，不配置的时候为默认渠道ID（5410093632）。代码在加载mmapp.js后执行;
+提供各种参数配置，可通过mm.init/mm.set方法配置，代码在加载mmapp.js后执行，
+详细配置参数，可查看<a href="#agr_detail">WAP调起API提供的参数配置说明</a>;
 
 </pre>
 </td>
@@ -126,16 +124,50 @@ mm.batchDownload("/300002784578/300002457498")
 </tr>
 
 </tbody></table>
+ </div>
 
 </div>
 <br />
 <br />
-
 <div>
-	<h2>WAP调起API提供的参数配置说明</h2>
-	<hr style='width:100%'/>
-<p>可配置参数：</p>
-<pre>
+	<h2 ><a name="version" class="domlink">历史版本</a></h2>
+	<hr />
+	<div class="subcontent">
+		<div>
+			<table class="version-detail">
+				<tr>
+					<th>版本</th>
+					<th>版本功能</th>
+				</tr>
+				<tr>
+					<td>version 1.0</td>
+					<td>
+						<ol>
+							<li>wap调起mm下载应用功能</li>
+							<li>wap调起mm打开详情功能</li>
+						</ol>
+					</td>
+				</tr>
+				<tr>
+					<td>version 2.0</td>
+					<td>
+						<ol>
+							<li>wap调起mm批量下载应用功能</li>
+						</ol>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<br />
+<br />
+<div>
+	<h2 ><a name="agr_detail" class="domlink">WAP调起API提供的参数配置说明</a></h2>
+	<hr/>
+	<div class="subcontent">
+	<p>可配置参数：</p>
+		<pre>
 batchMaxApps:"15" ;//批量下载最大应用数，默认15，目前客户端最多支持15个应用下载
 showtitle:true ;//调起客户端，在客户端显示调起端浏览器名字，默认显示
 channelid:'5410093632';//渠道ID设置，a.l0086.cn 默认使用渠道ID：5410093632
@@ -146,18 +178,20 @@ lockTime:2000;//intent调起的时间锁，默认2秒内只能进行一次intent
 <p>参数配置方法，不配置都是用默认值：</p>
 <p>1.通过初始化配置</p>
 <pre>
-	mm.init({
-		showtitle:true,
-		channelid:'5410093632',
-		onIntent:true,
-		reCall:2000,
-		lockTime:2000
-	})
+mm.init({
+	showtitle:true,
+	channelid:'5410093632',
+	onIntent:true,
+	reCall:2000,
+	lockTime:2000
+})
 </pre>
 <p>2.通过set方法配置</p>
 <pre>
-	mm.set("参数名",参数值);
-	举例，设置channelid:mm.set("channelid",'5410093632');
+mm.set("参数名",参数值);
+举例，设置channelid:mm.set("channelid",'5410093632');
 </pre>
+	</div>
+</div>
 </body>
 </html>
