@@ -239,7 +239,7 @@ $m.v={
 	support:function(type){
 		var v = $m.c.get($m.id.version);
 		var vtype = $m.c.get($m.id.version_type);
-		alert(vtype);
+//		alert(vtype);
 		var rs = false;
 		if(!!type){
 			if($m.u.s(v)&&v.length>0){
