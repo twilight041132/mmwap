@@ -12,7 +12,8 @@ var $m={
 	o:{},	//提供给外部的调用方法
 	v:{},	//版本能力检测
 	server:{}, //激活端口服务
-	client:{} //浏览器调起方法
+	client:{}, //浏览器调起方法
+	alert:{} //alert 插件
 };
 $m.s={
 	base:'',
@@ -20,6 +21,7 @@ $m.s={
 	CHATSET:'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
 }
 $m.url={
+	css:	"mmapp.css",
 	mm:				"http://a.10086.cn/d?ua=8020",
 	mmrelaapp:		"http://apk.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
 	batchmmrelaapp: "http://apk.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
@@ -239,7 +241,7 @@ $m.v={
 	support:function(type){
 		var v = $m.c.get($m.id.version);
 		var vtype = $m.c.get($m.id.version_type);
-		alert(vtype);
+//		alert(vtype);
 		var rs = false;
 		if(!!type){
 			if($m.u.s(v)&&v.length>0){
@@ -686,10 +688,116 @@ $m.o={
 		$m.server.checkOnce(options);
 	}
 }
+$m.alert={
+	cssloaded:0,
+	options:{
+		type:"alert",//"alert||confirm"
+		info:"",
+		save:function(){
+			
+		},
+		cancle:function(){
+			
+		}
+	},
+	success:function(){
+		$m.alert.options.save();
+		$m.alert.destory();
+	},
+	error:function(){
+		$m.alert.options.cancle();
+		$m.alert.destory();
+	},
+	set:function(opts){
+		for(var i in opts){
+			this.options[i] = opts[i]
+		}
+	},
+	css:	function(){return { tag:	"link",parent:	document.head , attr:	{rel:"stylesheet", type:	"text/css", href:	$m.s.base+$m.url.css },event:{}}},
+	view:function (){
+		var btns = [];
+		btns.push({tag:"div" ,attr:{class:"mm_alert_btn",id:"mm_alert_success"},html:'\u786e\u5b9a',event:{click : $m.alert.success}});
+		if($m.alert.options.type==='confirm'){
+			btns.push({tag:"div" ,attr:{class:"mm_alert_btn",id:"mm_alert_cancle"},html:'\u53d6\u6d88',event:{click : $m.alert.error}})
+		}
+		return 	{
+			tag:"div", parent:	document.body , attr:{ class:"mm_alert_modal",id:"mm_alert_modal"},
+			child:[
+				{tag:"div" ,attr:{class:"mm_alert",id:"mm_alert"},
+					child:[
+						{tag:"div" ,attr:{class:"mm_alert_info"},html:$m.alert.options.info},
+						{tag:"div",attr:{class:"mm_alert_footer"},
+						 child:btns
+						},
+					]
+				}
+			]	
+		}
+	},
+	show:function(opts){
+		this.set(opts);
+		this.loaded(function(){
+			$m.n.create($m.alert.view());
+			var alt = $m.alert.query("mm_alert");
+			alt&&(alt.style.marginTop =-parseInt(alt.offsetHeight/2 ,10) +"px",1);
+		});
+	},
+	loaded:function(fn){
+		if(!$m.alert.cssloaded){
+			var css = $m.alert.css();
+			css.event.load=function (){
+				$m.alert.cssloaded = 1;
+				if($m.u.f(fn)){
+					fn();
+				}
+			}
+			$m.n.create(css)
+		}else{
+			if($m.u.f(fn)){
+				fn();
+			}
+		}
+	},
+	query:function(id){
+			return document.querySelector?document.querySelector("#"+id):document.getElementById(id);
+	},
+	hide:function(){
+		var alt = $m.alert.query("mm_alert_modal");
+		alt&&(alt.style.display = "none");
+	},
+	destory:function(){
+		var alt = $m.alert.query("mm_alert_modal");
+		var success =$m.alert.query("mm_alert_success");
+		var cancle =$m.alert.query("mm_alert_cancle");
+		success&&success.removeEventListener("click",$m.alert.options.success)
+		cancle&&cancle.removeEventListener("click",$m.alert.options.cancle)
+		alt&&alt.remove();
+	}
+}
 $m.init=function(){
 	$m.v.init();
 	$m.client.setRequestUrl();
 	window.mm=$m.o;
+	
+	$m.u.each(document.querySelectorAll("script"),function(a){
+		var b = a.src.match($m.mo.moapp_reg);
+		if(b){ $m.s.base = b[1]}
+	})
+	
+//	$m.alert.loaded();
+//	setTimeout(function(){
+//		$m.alert.show({
+//			type:"confirm",
+//			info:'44444',
+//			save:function(){
+//				alert('ok')
+//			},
+//			cancle:function(){
+//				alert('cancle')
+//			}
+//		})
+//	},1000)
+	
 }
 $m.init();
 })();
