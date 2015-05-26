@@ -123,6 +123,8 @@
 			margin-right: 10px;
 			border:1px solid #7DC888;
 		}
+		
+
 	</style>
 </head>
 <body>
@@ -529,7 +531,9 @@
 </body>
 <script type="text/javascript">
 	(function(){
-		
+		mm.init({
+			showtitle:false
+		});
 		function addEvent(elm, evType, fn, useCapture) {
 			if (elm.addEventListener) {
 				elm.addEventListener(evType, fn, useCapture);//DOM2.0
