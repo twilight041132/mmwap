@@ -602,25 +602,7 @@
 				var ids = "";
 				items.forEach(function(item,index){
 					var check = item.checked;
-					if(typeof check !='undefined'&&check){
-						var value=item.value;
-						ids===""?ids=value:ids+="/"+value;
-					}
-				});
-				if(ids===""){
-					alert("请选择需要下载的应用");
-				}else{
-					mm.batchDownload(ids);
-				}
-			}
-		},false);
-		function checkAll(type){
-			var els = document.querySelectorAll(".app-item-check input");
-			for(var i=0;i<els.length;i++){
-				els[i].checked = type;
-			}
-		}
-	})();
+					if(typeof check !='undefi
 	
 </script>
 </html>
