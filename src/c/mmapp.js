@@ -184,16 +184,16 @@ $m.c={ //cookie
 		if(arr != null) return unescape(arr[2]); return null;
 	}
 }
-$m.db={
-	get:		function(name){
-		if ("undefined" == typeof localStorage )  return false;
-		else return localStorage.getItem(name);
-	},
-	set:		function(name,value){
-		if ("undefined" == typeof localStorage ) return false;
-		localStorage.setItem(name,value);
-	}
-}
+//$m.db={
+//	get:		function(name){
+//		if ("undefined" == typeof localStorage )  return false;
+//		else return localStorage.getItem(name);
+//	},
+//	set:		function(name,value){
+//		if ("undefined" == typeof localStorage ) return false;
+//		localStorage.setItem(name,value);
+//	}
+//}
 $m.n={ //node
 	attr:		function(e,k){	return e!=null?e.getAttribute(k):null;	},
 	get:		function (key){	return document.querySelector(key);		},  
@@ -392,6 +392,16 @@ $m.server={
 //		console.log(this.checking);
 		if(this.checking) return ;
 		this.lockCheck();
+		var error = options.error,
+		success = options.success;
+		options.success = function(){
+			success.call(this,null);
+			$m.server.unLockCheck();
+		}
+		options.error = function(){
+			error.call(this,null);
+			$m.server.unLockCheck();
+		}
 		if(typeof time !='undefined'){
 			var start =time ;
 			if(start!=0){
@@ -403,6 +413,16 @@ $m.server={
 	checkOnce: function (options){
 		if(this.checking) return ;
 		this.lockCheck();
+		var error = options.error,
+		success = options.success;
+		options.success = function(){
+			success.call(this,null);
+			$m.server.unLockCheck();
+		}
+		options.error = function(){
+			error.call(this,null);
+			$m.server.unLockCheck();
+		}
 		$m.server.check(0,0,options);
 	},
 	/**
@@ -427,7 +447,7 @@ $m.server={
 			var e =c.target;
 			e.onload = e.onerror = null;
 			e.remove&&(e.remove(),1)||e.parentNode&&(e.parentNode.removeChild(e),1);
-			if ((b||(!limit&&num==$m.mo.mmPort.length-1))&&$m.u.o(options)) {
+			if ((b||(!limit&&num==$m.mo.mmPort.length-1))&&$m.u.o(options)) {//已成功或者最后一次调用
 				//成功响应不再尝试响应端口
 				if(b){
 					$m.c.set($m.id.port,$m.mo.mmPort[num]);
@@ -435,7 +455,6 @@ $m.server={
 				}
 				if(c.type=="load"&&$m.u.f(options.success)){
 					options.success();
-					$m.server.unLockCheck();
 				}else if(c.type!="load"&&$m.u.f(options.error)){
 					options.error();
 				}
@@ -456,7 +475,6 @@ $m.server={
 					}else{
 						if(c.type=="load"&&$m.u.f(options.success)){
 							options.success();
-							$m.server.unLockCheck();
 						}else if(c.type!="load"&&$m.u.f(options.error)){
 							options.error();
 						}
@@ -490,7 +508,7 @@ $m.server={
 	},
 	status:	function ()	{return $m.c.get($m.id.DAEMON)==1;
 	},
-	checking:false,//调起MM功能加锁，避免短时间重复唤起
+	checking:false,//调起MM激活加锁，避免短时间重复激活测试
 	lockCheck:function(){
 		this.checking = true;
 	},
@@ -556,7 +574,7 @@ $m.o={
 //					$m.client.chrome($m.mo.index);
 					//指定延时后，重新执行下载任务
 					setTimeout(function(){
-						$m.u.f($m.server.unLockCheck)&&$m.server.unLockCheck();
+//						$m.u.f($m.server.unLockCheck)&&$m.server.unLockCheck();
 						var opts = {
 							success:function(){
 								_this.success();
@@ -623,10 +641,11 @@ $m.o={
 				type:"weixin",
 				save:function(){
 					$m.client.download($m.url.wetchartmm);
-				},
-				ready:function(){
-					$m.server.unLockCheck();
 				}
+//				,
+//				ready:function(){
+//					$m.server.unLockCheck();
+//				}
 			})
 		}else{
 			var mmapp=$m.o.getMMUri(type);
@@ -637,32 +656,30 @@ $m.o={
 			//支持的浏览器直接下载MM并安装，启动时下载应用
 			var bs = $m.b.bs();
 			function d(contentid,dt){
+				//不支持浏览器或者是批量不支持的浏览器
 				if(bs =='' || (!$m.b.longFileNameAccept()&&dt===$m.v.act.b) || dt==$m.v.act.d){
 					var url = mmapp.replace('{contentid}',"");
 					$m.client.download(url);
-					var options = self.initOptions();
-					options.success=function(){
-						$m.client.downloadApp(contentid,type);
-					}
-					options.error = function(){
-						$m.server.unLockCheck();
-					}
-					setTimeout(function(){
-						$m.server.unLockCheck();
-						if(contentid!="")$m.server.longCheck(120,options);
-					},0)
+					//5.3需求增加引导提示，不在做120秒扫描
+//					var options = self.initOptions();
+//					options.success=function(){
+//						$m.client.downloadApp(contentid,type);
+//					}
+//					options.error = function(){
+//					}
+//					setTimeout(function(){
+//						if(contentid!="")$m.server.longCheck(120,options);
+//					},0)
 				}else{
 					var url = mmapp.replace('{contentid}',contentid);
 					$m.client.download(url);
-					$m.server.unLockCheck();
 				}
 			}
 			if(dt!=$m.v.act.d){
 					$m.alert.show({
 						type:"guid",
 						save:function(){
-							$m.server.unLockCheck();
-							$m.o.callMMbyType(contentid,dt);
+							$m.o.__callMMbyType(contentid,dt);
 						},
 						ready:function(){
 //							$m.server.unLockCheck();
@@ -742,7 +759,7 @@ $m.o={
 		$m.o.exce(options);
 	},
 	//内部调用：批量调用比较特殊，失败的时候id不加密，成功ID加密，所以不能直接调用这个方法
-	callMMbyType:function(id,type){
+	__callMMbyType:function(id,type){
 		var self = this;
 //		console.log(id+"  "+type);
 		switch (type){
@@ -762,7 +779,6 @@ $m.o={
 			$m.client.open(url,$m.o.get("showtitle"));
 		}
 		options.error = function(){
-			$m.server.unLockCheck();
 		}
 		$m.o.exce(options);
 	},
@@ -893,6 +909,7 @@ $m.alert={
 	},
 	show:function(opts){
 		var self = this;
+		self.destory();
 		self.clearOpts();
 		self.set(opts);
 		self.loaded(function(){
@@ -901,10 +918,6 @@ $m.alert={
 	},
 	create:function(){
 		var self = this;
-		var n = self.query("__mm-wap-toast");
-		if(n && n.parentNode){  
-	        n.parentNode.removeChild(n);  
-	    }
 		var html = self.view();
 		var d = document.createElement("div");
 		d.setAttribute("id","__mm-wap-toast");
@@ -950,7 +963,7 @@ $m.alert={
 		var success = self.el['__mm-wap-success'] ||(self.el['__mm-wap-success']=[self.query("__mm-wap-success")]);
 		var close = self.el['__mm-wap-close'] ||(self.el['__mm-wap-close']=[self.query("__mm-wap-close")]);
 		if(success != null && success.length>0){
-			success.push("touchstart");
+			success.push("click");
 			success.push(function(e){
 				$m.event.preventDefault(e);
 				$m.event.stopPropagation(e);
@@ -961,7 +974,7 @@ $m.alert={
 			$m.event.addHandle.apply($m.event,success);
 		}
 		if(close != null && close.length>0){
-			close.push("touchstart");
+			close.push("click");
 			close.push(function(e){
 				$m.event.preventDefault(e);
 				$m.event.stopPropagation(e);
@@ -1012,10 +1025,12 @@ $m.alert={
 		}
 		$m.event.removeHandle(window,"resize",self.resize);
 		$m.event.removeHandle(window,"scroll",self.resize);
-		var n = self.el["__mm-wap-toast"][0];
-		if(n && n.parentNode){  
-	        n.parentNode.removeChild(n);  
-	    }
+		if(typeof self.el["__mm-wap-toast"] !='undefined'){
+			var n = self.el["__mm-wap-toast"][0];
+			if(n && n.parentNode){  
+		        n.parentNode.removeChild(n);  
+		    }
+		}
 		self.el = {};
 	}
 }
