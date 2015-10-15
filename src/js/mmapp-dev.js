@@ -701,7 +701,7 @@
 			query: function(id) {
 				return document.querySelector ? document.querySelector("#" + id) : document.getElementById(id);
 			},
-			destory: function() {
+			destroy: function() {
 				var me = this;
 				for (var i in me.el) {
 					var e = me.el[i];

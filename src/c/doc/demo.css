@@ -131,4 +131,4 @@ pre {
 	border: 0;
 	border: 1px dotted #785;
 	background: #f5f5f5;		word-wrap: break-word;	word-break: break-all;
-}.version-detail td{	vertical-align: top;}
+}.version-detail td{	vertical-align: top;}.del{	text-decoration: line-through;}

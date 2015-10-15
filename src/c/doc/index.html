@@ -180,8 +180,13 @@ batchMaxApps:"15" ;//批量下载最大应用数，默认15，目前客户端最
 showtitle:true ;//调起客户端，在客户端显示调起端浏览器名字，默认显示
 channelid:'5410093632';//渠道ID设置，a.l0086.cn 默认使用渠道ID：5410093632
 onIntent:true;//端口激活客户端失败，默认启用intent调起
-reCall:2000;//端口激活客户端失败,启用intent调起之后，默认2秒后执行用户操作
-lockTime:2000;//intent调起的时间锁，默认2秒内只能进行一次intent调起
+<div class="del">reCall:2000;//端口激活客户端失败,启用intent调起之后，默认2秒后执行用户操作</div>
+<div class="del">
+	lockTime:2000;//intent调起的时间锁，默认2秒内只能进行一次intent调起
+</div>
+<strong>
+注：version3.0开始不再设置reCall和lockTime，原有页面做设置不再有效，默认一次激活过程未结束时锁定用户激活操作，intent调起是激活失败时调用，暂不做限制。
+</strong>
 </pre>
 <p>参数配置方法，不配置都是用默认值：</p>
 <p>1.通过初始化配置</p>
@@ -190,8 +195,8 @@ mm.init({
 	showtitle:true,
 	channelid:'5410093632',
 	onIntent:true,
-	reCall:2000,
-	lockTime:2000
+	<div class="del">reCall:2000,</div>
+	<div class="del">lockTime:2000</div>
 })
 </pre>
 <p>2.通过set方法配置</p>
