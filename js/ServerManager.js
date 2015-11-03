@@ -1,6 +1,6 @@
 /**
  * Created by linxiaojie on 2015/10/14.
- * ���ͻ��˷���
+ * 检测客户端服务
  */
 var Event = require('./Event'),
     Params = require('./Params'),
@@ -13,9 +13,17 @@ var isCheck = false,
     errCount = 0,
     version_reg = /^(MMLite|MM)[0-9]+(\.[0-9]*|$)?(\.[0-9]*|$)?/i,
     slice = [].slice,
-    check_args = [] //�����У�鴫��Ĳ���;
+    check_args = [], //服务端校验传入的参数;
+    temp = null ;
 
+/*
+    开始检测MM，下载、详情等调用MM功能都会触发次事件，
+    evt参数为 method，其他参数；
+    检测MM成功会把参数传给success事件回调
+    检测MM失败会把参数传给error事件回调
+ */
 function check(evt) {
+    hasFlag();
     check_args = slice.call(evt.args, 1);
     if (isCheck) return;
     Event.trigger("server.before.check");
@@ -28,7 +36,14 @@ function check(evt) {
         script.src = versionUrl.replace("{port}", p) + "?" + Date.now();
         document.getElementsByTagName("head")[0].appendChild(script)
     })
-}
+};
+
+//页面有a变量，需先存起来，避免被覆盖 ----历史预留问题
+function hasFlag(){
+    if(typeof window.a !== 'undefined' && typeof window.a.appname == 'undefined'){
+        temp = window.a;
+    }
+};
 
 function beforeCheck() {
     removeAll();
@@ -49,10 +64,15 @@ function afterCheck(evt) {
     removeAll();
     if ("success" === args[0]) {
         Util.setCookie(Params.port, args[1]);
-        //��ʷ���⣬�ͻ�������У��ֱ�ӷ�����ȫ�ֱ���a�����и���ҳ������ķ���
+        //历史问题，客户端连接校验直接返回了全局变量a，会有覆盖页面变量的风险
         if (typeof window.a != 'undefined' && typeof window.a.appname != 'undefined') {
             setVersion(window.a);
-            delete window.a;
+            //页面本来没有定义a变量，删除
+            if(temp === null){
+                delete window.a;
+            }else{//还原a变量
+                window.a = temp;
+            }
             check_args.unshift("server.check.success");
             Event.trigger.apply(Event, check_args);
         } else {
@@ -71,7 +91,7 @@ function setVersion(a) {
     if (appname && appname.length > 0) {
         var v = appname.match(version_reg);
         if (!!v) {
-            //�汾��־��lite or normal
+            //版本标志：lite or normal
             var vtype = v[1] || 'MM';
             Util.setCookie(Params.version_type, vtype.toUpperCase());
 

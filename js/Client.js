@@ -1,6 +1,6 @@
 /**
  * Created by linxiaojie on 2015/10/14.
- * ¿Í»§¶ËÌá¹©°æ±¾¹¦ÄÜ
+ * å®¢æˆ·ç«¯æä¾›ç‰ˆæœ¬åŠŸèƒ½
  */
 var Event = require('./Event'),
     Params = require('./Params'),
@@ -10,22 +10,22 @@ var Event = require('./Event'),
 var slice = [].slice,
     versionUtil = {
         act: {
-            b: 'batchdownload', //ÅúÁ¿ÏÂÔØ
-            dl: 'download', //µ¥Ó¦ÓÃÏÂÔØ
-            d: 'detail' //ÏêÇé
+            b: 'batchdownload', //æ‰¹é‡ä¸‹è½½
+            dl: 'download', //å•åº”ç”¨ä¸‹è½½
+            d: 'detail' //è¯¦æƒ…
         },
         ls: {
             "MM": {},
             "MMLITE": {}
         },
         init: function() {
-            //MMÕıÊ½°æ±¾£¬°æ±¾¹¦ÄÜ£º
+            //MMæ­£å¼ç‰ˆæœ¬ï¼Œç‰ˆæœ¬åŠŸèƒ½ï¼š
             var me = this;
             me.ls["MM"][me.act.b] = 510;
             me.ls["MM"][me.act.dl] = 501;
             me.ls["MM"][me.act.d] = 500;
 
-            //MMLite°æ±¾£¬°æ±¾¹¦ÄÜ£º
+            //MMLiteç‰ˆæœ¬ï¼Œç‰ˆæœ¬åŠŸèƒ½ï¼š
             me.ls["MMLITE"][me.act.b] = 200;
             me.ls["MMLITE"][me.act.dl] = 200;
             me.ls["MMLITE"][me.act.d] = 200;
@@ -40,7 +40,7 @@ var slice = [].slice,
                     v = parseInt(v, 10);
                     //debug.log(vtype)
                     var base = me.ls[vtype][type];
-                    if (base && v >= base) { //¸ßÓÚ»òµÈÓÚÖ¸¶¨¹¦ÄÜ°æ±¾ÔòÖ§³Ö
+                    if (base && v >= base) { //é«˜äºæˆ–ç­‰äºæŒ‡å®šåŠŸèƒ½ç‰ˆæœ¬åˆ™æ”¯æŒ
                         rs = true;
                     }
                 }
@@ -48,7 +48,7 @@ var slice = [].slice,
             return rs;
         },
         /**
-         * ¸ßÓÚÖ¸¶¨°æ±¾·µ»Øture,·ñÔò·µ»Øfalse;
+         * é«˜äºæŒ‡å®šç‰ˆæœ¬è¿”å›ture,å¦åˆ™è¿”å›false;
          */
         checkVersion: function(b) {
             var me = this,
@@ -88,16 +88,16 @@ var slice = [].slice,
             var appname = '',
                 ua = this.ua;
             var browser = {
-                whatchar: ua.match(/MicroMessenger/i) ? 'Î¢ĞÅ' : '',
-                uc: ua.match(/(UCBrowser)|(UCWEB)/i) ? 'UCä¯ÀÀÆ÷' : '',
-                qq: ua.match(/MQQBrowser/i) ? 'QQä¯ÀÀÆ÷' : '',
-                op: ua.match(/oupeng/i) ? 'Å·Åóä¯ÀÀÆ÷' : '',
-                ay: ua.match(/MxBrowser/i) ? 'åÛÓÎä¯ÀÀÆ÷' : '',
-                lb: ua.match(/LieBao/i) ? 'ÁÔ±ªä¯ÀÀÆ÷' : '',
-                xm: ua.match(/MiuiBrowser/i) ? 'Ğ¡Ã×ä¯ÀÀÆ÷' : '',
-                bd: ua.match(/baidubrowser/i) ? '°Ù¶Èä¯ÀÀÆ÷' : '',
-                b360: ua.match(/360 aphone/i) ? '360ä¯ÀÀÆ÷' : '',
-                sg: ua.match(/sogoumobilebrowser/i) ? 'ËÑ¹·ä¯ÀÀÆ÷' : ''
+                whatchar: ua.match(/MicroMessenger/i) ? 'å¾®ä¿¡' : '',
+                uc: ua.match(/(UCBrowser)|(UCWEB)/i) ? 'UCæµè§ˆå™¨' : '',
+                qq: ua.match(/MQQBrowser/i) ? 'QQæµè§ˆå™¨' : '',
+                op: ua.match(/oupeng/i) ? 'æ¬§æœ‹æµè§ˆå™¨' : '',
+                ay: ua.match(/MxBrowser/i) ? 'é¨æ¸¸æµè§ˆå™¨' : '',
+                lb: ua.match(/LieBao/i) ? 'çŒè±¹æµè§ˆå™¨' : '',
+                xm: ua.match(/MiuiBrowser/i) ? 'å°ç±³æµè§ˆå™¨' : '',
+                bd: ua.match(/baidubrowser/i) ? 'ç™¾åº¦æµè§ˆå™¨' : '',
+                b360: ua.match(/360 aphone/i) ? '360æµè§ˆå™¨' : '',
+                sg: ua.match(/sogoumobilebrowser/i) ? 'æœç‹—æµè§ˆå™¨' : ''
             };
             for (var b in browser) {
                 if (browser[b] != '') {
@@ -111,16 +111,16 @@ var slice = [].slice,
             var result = false,
                 ua = this.ua;
             var browser = {
-                //			whatchar:ua.match(/MicroMessenger/i)?'Î¢ĞÅ':'',
-                //			uc:ua.match(/(UCBrowser)|(UCWEB)/i)?'UCä¯ÀÀÆ÷':'',
-                qq: ua.match(/MQQBrowser/i) ? 'QQä¯ÀÀÆ÷' : '',
-                //			op:ua.match(/oupeng/i)?'Å·Åóä¯ÀÀÆ÷':'',
-                ay: ua.match(/MxBrowser/i) ? 'åÛÓÎä¯ÀÀÆ÷' : '',
-                lb: ua.match(/LieBao/i) ? 'ÁÔ±ªä¯ÀÀÆ÷' : '',
-                //			xm:ua.match(/MiuiBrowser/i)?'Ğ¡Ã×ä¯ÀÀÆ÷':'',
-                bd: ua.match(/baidubrowser/i) ? '°Ù¶Èä¯ÀÀÆ÷' : '',
-                //			b360:ua.match(/360 aphone browser/i)?'360ä¯ÀÀÆ÷':'',
-                //			sg:ua.match(/sogoumobilebrowser/i)?'ËÑ¹·ä¯ÀÀÆ÷':''
+                //			whatchar:ua.match(/MicroMessenger/i)?'å¾®ä¿¡':'',
+                //			uc:ua.match(/(UCBrowser)|(UCWEB)/i)?'UCæµè§ˆå™¨':'',
+                qq: ua.match(/MQQBrowser/i) ? 'QQæµè§ˆå™¨' : '',
+                //			op:ua.match(/oupeng/i)?'æ¬§æœ‹æµè§ˆå™¨':'',
+                ay: ua.match(/MxBrowser/i) ? 'é¨æ¸¸æµè§ˆå™¨' : '',
+                lb: ua.match(/LieBao/i) ? 'çŒè±¹æµè§ˆå™¨' : '',
+                //			xm:ua.match(/MiuiBrowser/i)?'å°ç±³æµè§ˆå™¨':'',
+                bd: ua.match(/baidubrowser/i) ? 'ç™¾åº¦æµè§ˆå™¨' : '',
+                //			b360:ua.match(/360 aphone browser/i)?'360æµè§ˆå™¨':'',
+                //			sg:ua.match(/sogoumobilebrowser/i)?'æœç‹—æµè§ˆå™¨':''
             };
             for (var b in browser) {
                 if (browser[b] != '') {
@@ -133,7 +133,7 @@ var slice = [].slice,
         getCurrentBs: function() {
             var me = this,
                 bsName = this.bs();
-            return bsName != '' ? bsName : 'ä¯ÀÀÆ÷';
+            return bsName != '' ? bsName : 'æµè§ˆå™¨';
         }
     },
     client = {
@@ -148,10 +148,10 @@ var slice = [].slice,
             MM_CONTENT_ID: "300000863435"
         },
         reqMethod: {
-            queryapp: 'queryapp&appname=', //²éÑ¯Ó¦ÓÃÊÇ·ñÏÂÔØ
-            querydownprogress: 'querydownprogress&contentid=', //²éÑ¯Ó¦ÓÃÏÂÔØ½ø¶È
-            download: 'download&url=', //µ÷ÆğMMÏÂÔØ
-            jump: 'jump&url=', //Ìø×ªÖ¸¶¨Ò³Ãæ &appname=''
+            queryapp: 'queryapp&appname=', //æŸ¥è¯¢åº”ç”¨æ˜¯å¦ä¸‹è½½
+            querydownprogress: 'querydownprogress&contentid=', //æŸ¥è¯¢åº”ç”¨ä¸‹è½½è¿›åº¦
+            download: 'download&url=', //è°ƒèµ·MMä¸‹è½½
+            jump: 'jump&url=', //è·³è½¬æŒ‡å®šé¡µé¢ &appname=''
             batchdownload: 'batchdownload&contentids='
         },
         run: function(app, isOpen) {
@@ -297,7 +297,7 @@ var slice = [].slice,
                 setTimeout(function() {
                     var e = Date.now();
                     //					debug.log(e - t);
-                    //Ê±¼äÅĞ¶Ï·½·¨¸ö±ğä¯ÀÀÆ÷ÎŞĞ§£¬ÈçUC£¬»ù±¾js²»¹ÒÆğ
+                    //æ—¶é—´åˆ¤æ–­æ–¹æ³•ä¸ªåˆ«æµè§ˆå™¨æ— æ•ˆï¼Œå¦‚UCï¼ŒåŸºæœ¬jsä¸æŒ‚èµ·
                     if (!t || e - t < timeout + 200) {
                         args.unshift("downloadmm");
                     }
@@ -360,10 +360,10 @@ var slice = [].slice,
             var me = this,
                 v = versionUtil,
                 reqUrl = me.reqUrl;
-            //ÅúÁ¿ÏÂÔØÓ¦ÓÃ mmÏÂÔØÂ·¾¶
+            //æ‰¹é‡ä¸‹è½½åº”ç”¨ mmä¸‹è½½è·¯å¾„
             if (typeof type != "undefined" && type == v.act.b) {
                 return reqUrl.batchmmrelaapp.replace("{channelid}", Config["channelid"]);
-            } else { //µ¥Ó¦ÓÃÏÂÔØ mmÏÂÔØÂ·¾¶
+            } else { //å•åº”ç”¨ä¸‹è½½ mmä¸‹è½½è·¯å¾„
                 return reqUrl.mmrelaapp.replace("{channelid}", Config["channelid"]);
             }
         }

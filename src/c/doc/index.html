@@ -123,6 +123,26 @@ mm.batchDownload("/300002784578/300002457498")
 </td>
 </tr>
 
+
+<tr>
+	<td>
+		3.打开指定url页面
+	</td>
+	<td>
+<pre>
+js调用mm.open(url, check)调用MM打开指定url地址，check 为布尔值，配置MM调起失败是否下载MM，<br/>默认为true（下载MM）
+</pre>
+	</td>
+	<td>
+<pre>
+
+mm.open("http://xxxx.xxx.com/xx.html")
+
+</pre>
+	</td>
+</tr>
+
+
 </tbody></table>
  </div>
 
@@ -140,7 +160,7 @@ mm.batchDownload("/300002784578/300002457498")
 					<th>版本功能</th>
 				</tr>
 				<tr>
-					<td>version 1.0</td>
+					<td>三期</td>
 					<td>
 						<ol>
 							<li>wap调起mm下载应用功能</li>
@@ -149,7 +169,7 @@ mm.batchDownload("/300002784578/300002457498")
 					</td>
 				</tr>
 				<tr>
-					<td>version 2.0</td>
+					<td>四期</td>
 					<td>
 						<ol>
 							<li>wap调起mm批量下载应用功能</li>
@@ -157,10 +177,18 @@ mm.batchDownload("/300002784578/300002457498")
 					</td>
 				</tr>
 				<tr>
-					<td>version 3.0</td>
+					<td>五期</td>
 					<td>
 						<ol>
 							<li>wap调起mm新增微信和流量器引导弹窗</li>
+						</ol>
+					</td>
+				</tr>
+				<tr>
+					<td>六期</td>
+					<td>
+						<ol>
+							<li>wap调起mm打开指定页面</li>
 						</ol>
 					</td>
 				</tr>
@@ -185,7 +213,7 @@ onIntent:true;//端口激活客户端失败，默认启用intent调起
 	lockTime:2000;//intent调起的时间锁，默认2秒内只能进行一次intent调起
 </div>
 <strong>
-注：version3.0开始不再设置reCall和lockTime，原有页面做设置不再有效，默认一次激活过程未结束时锁定用户激活操作，intent调起是激活失败时调用，暂不做限制。
+注：5期开始不再设置reCall和lockTime，原有页面做设置不再有效，默认一次激活过程未结束时锁定用户激活操作，intent调起是激活失败时调用，暂不做限制。
 </strong>
 </pre>
 <p>参数配置方法，不配置都是用默认值：</p>

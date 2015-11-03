@@ -17,7 +17,7 @@ gulp.task('build',function(){
     return browserify('./app.js').bundle()
         .pipe(source('mmapp.js'))
         .pipe(buffer())
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('./src/c'));
 });
 
@@ -39,7 +39,7 @@ gulp.task('appServer',function(){
 });
 
 /*
-    ´ò°ü
+    ï¿½ï¿½ï¿½
  */
 gulp.task('archive:clean', function(){
     del(

@@ -15,18 +15,18 @@ var slice = [].slice,
 
 function eachEvent(events, callback, iterator) {
 
-    // ²»Ö§³Ö¶ÔÏó£¬Ö»Ö§³Ö¶à¸öeventÓÃ¿Õ¸ñ¸ô¿ª
+    // ä¸æ”¯æŒå¯¹è±¡ï¼Œåªæ”¯æŒå¤šä¸ªeventç”¨ç©ºæ ¼éš”å¼€
     (events || '').split(separator).forEach(function(type) {
         iterator(type, callback);
     });
 };
 
-// Éú³ÉÆ¥ÅänamespaceÕıÔò
+// ç”ŸæˆåŒ¹é…namespaceæ­£åˆ™
 function matcherFor(ns) {
     return new RegExp('(?:^| )' + ns.replace(' ', ' .* ?') + '(?: |$)');
 };
 
-// ·ÖÀëevent nameºÍevent namespace
+// åˆ†ç¦»event nameå’Œevent namespace
 function parse(name) {
     var parts = ('' + name).split('.');
 
@@ -52,9 +52,9 @@ function findHandlers(arr, name, callback, context) {
     });
 };
 /**
- * EventÀà£¬½áºÏgmu.eventÒ»ÆğÊ¹ÓÃ, ¿ÉÒÔÊ¹ÈÎºÎ¶ÔÏó¾ßÓĞÊÂ¼şĞĞÎª¡£°üº¬»ù±¾`preventDefault()`, `stopPropagation()`·½·¨¡£
- * ¿¼ÂÇµ½´ËÊÂ¼şÃ»ÓĞDomÃ°Åİ¸ÅÄî£¬ËùÒÔÃ»ÓĞ`stopImmediatePropagation()`·½·¨¡£¶ø`stopProgapation()`µÄ×÷ÓÃ¾ÍÊÇ
- * ÈÃÖ®ºóµÄhandler¶¼²»Ö´ĞĞ¡£
+ * Eventç±»ï¼Œç»“åˆgmu.eventä¸€èµ·ä½¿ç”¨, å¯ä»¥ä½¿ä»»ä½•å¯¹è±¡å…·æœ‰äº‹ä»¶è¡Œä¸ºã€‚åŒ…å«åŸºæœ¬`preventDefault()`, `stopPropagation()`æ–¹æ³•ã€‚
+ * è€ƒè™‘åˆ°æ­¤äº‹ä»¶æ²¡æœ‰Domå†’æ³¡æ¦‚å¿µï¼Œæ‰€ä»¥æ²¡æœ‰`stopImmediatePropagation()`æ–¹æ³•ã€‚è€Œ`stopProgapation()`çš„ä½œç”¨å°±æ˜¯
+ * è®©ä¹‹åçš„handleréƒ½ä¸æ‰§è¡Œã€‚
  *
  * @class Event
  * @constructor
@@ -71,8 +71,8 @@ function findHandlers(arr, name, callback, context) {
 			 * }
  * ```
  * @grammar new gmu.Event( name[, props]) => instance
- * @param {String} type ÊÂ¼şÃû×Ö
- * @param {Object} [props] ÊôĞÔ¶ÔÏó£¬½«±»¸´ÖÆ½øevent¶ÔÏó¡£
+ * @param {String} type äº‹ä»¶åå­—
+ * @param {Object} [props] å±æ€§å¯¹è±¡ï¼Œå°†è¢«å¤åˆ¶è¿›eventå¯¹è±¡ã€‚
  */
 
 function Event(type, props) {
@@ -91,21 +91,21 @@ Event.prototype = {
     /**
      * @method isDefaultPrevented
      * @grammar e.isDefaultPrevented() => Boolean
-     * @desc ÅĞ¶Ï´ËÊÂ¼şÊÇ·ñ±»×èÖ¹
+     * @desc åˆ¤æ–­æ­¤äº‹ä»¶æ˜¯å¦è¢«é˜»æ­¢
      */
     isDefaultPrevented: returnFalse,
 
     /**
      * @method isPropagationStopped
      * @grammar e.isPropagationStopped() => Boolean
-     * @desc ÅĞ¶Ï´ËÊÂ¼şÊÇ·ñ±»Í£Ö¹ÂûÑÓ
+     * @desc åˆ¤æ–­æ­¤äº‹ä»¶æ˜¯å¦è¢«åœæ­¢è”“å»¶
      */
     isPropagationStopped: returnFalse,
 
     /**
      * @method preventDefault
      * @grammar e.preventDefault() => undefined
-     * @desc ×èÖ¹ÊÂ¼şÄ¬ÈÏĞĞÎª
+     * @desc é˜»æ­¢äº‹ä»¶é»˜è®¤è¡Œä¸º
      */
     preventDefault: function() {
         this.isDefaultPrevented = returnTrue;
@@ -114,7 +114,7 @@ Event.prototype = {
     /**
      * @method stopPropagation
      * @grammar e.stopPropagation() => undefined
-     * @desc ×èÖ¹ÊÂ¼şÂûÑÓ
+     * @desc é˜»æ­¢äº‹ä»¶è”“å»¶
      */
     stopPropagation: function() {
         this.isPropagationStopped = returnTrue;
@@ -124,13 +124,13 @@ Event.prototype = {
 module.exports =  {
 
     /**
-     * °ó¶¨ÊÂ¼ş¡£
+     * ç»‘å®šäº‹ä»¶ã€‚
      * @method on
      * @grammar on( name, fn[, context] ) => me
-     * @param  {String}   name     ÊÂ¼şÃû
-     * @param  {Function} callback ÊÂ¼ş´¦ÀíÆ÷
-     * @param  {Object}   context  ÊÂ¼ş´¦ÀíÆ÷µÄÉÏÏÂÎÄ¡£
-     * @return {me} ·µ»Ø×ÔÉí£¬·½±ãÁ´Ê½
+     * @param  {String}   name     äº‹ä»¶å
+     * @param  {Function} callback äº‹ä»¶å¤„ç†å™¨
+     * @param  {Object}   context  äº‹ä»¶å¤„ç†å™¨çš„ä¸Šä¸‹æ–‡ã€‚
+     * @return {me} è¿”å›è‡ªèº«ï¼Œæ–¹ä¾¿é“¾å¼
      * @chainable
      */
     on: function(name, callback, context) {
@@ -157,13 +157,13 @@ module.exports =  {
     },
 
     /**
-     * °ó¶¨ÊÂ¼ş£¬ÇÒµ±handlerÖ´ĞĞÍêºó£¬×Ô¶¯½â³ı°ó¶¨¡£
+     * ç»‘å®šäº‹ä»¶ï¼Œä¸”å½“handleræ‰§è¡Œå®Œåï¼Œè‡ªåŠ¨è§£é™¤ç»‘å®šã€‚
      * @method one
      * @grammar one( name, fn[, context] ) => me
-     * @param  {String}   name     ÊÂ¼şÃû
-     * @param  {Function} callback ÊÂ¼ş´¦ÀíÆ÷
-     * @param  {Object}   context  ÊÂ¼ş´¦ÀíÆ÷µÄÉÏÏÂÎÄ¡£
-     * @return {me} ·µ»Ø×ÔÉí£¬·½±ãÁ´Ê½
+     * @param  {String}   name     äº‹ä»¶å
+     * @param  {Function} callback äº‹ä»¶å¤„ç†å™¨
+     * @param  {Object}   context  äº‹ä»¶å¤„ç†å™¨çš„ä¸Šä¸‹æ–‡ã€‚
+     * @return {me} è¿”å›è‡ªèº«ï¼Œæ–¹ä¾¿é“¾å¼
      * @chainable
      */
     one: function(name, callback, context) {
@@ -187,13 +187,13 @@ module.exports =  {
     },
 
     /**
-     * ½â³ıÊÂ¼ş°ó¶¨
+     * è§£é™¤äº‹ä»¶ç»‘å®š
      * @method off
      * @grammar off( name[, fn[, context] ] ) => me
-     * @param  {String}   name     ÊÂ¼şÃû
-     * @param  {Function} callback ÊÂ¼ş´¦ÀíÆ÷
-     * @param  {Object}   context  ÊÂ¼ş´¦ÀíÆ÷µÄÉÏÏÂÎÄ¡£
-     * @return {me} ·µ»Ø×ÔÉí£¬·½±ãÁ´Ê½
+     * @param  {String}   name     äº‹ä»¶å
+     * @param  {Function} callback äº‹ä»¶å¤„ç†å™¨
+     * @param  {Object}   context  äº‹ä»¶å¤„ç†å™¨çš„ä¸Šä¸‹æ–‡ã€‚
+     * @return {me} è¿”å›è‡ªèº«ï¼Œæ–¹ä¾¿é“¾å¼
      * @chainable
      */
     off: function(name, callback, context) {
@@ -219,12 +219,12 @@ module.exports =  {
     },
 
     /**
-     * ´¥·¢ÊÂ¼ş
+     * è§¦å‘äº‹ä»¶
      * @method trigger
      * @grammar trigger( name[, ...] ) => me
-     * @param  {String | Event }   evt     ÊÂ¼şÃû»ògmu.Event¶ÔÏóÊµÀı
-     * @param  {*} * ÈÎÒâ²ÎÊı
-     * @return {me} ·µ»Ø×ÔÉí£¬·½±ãÁ´Ê½
+     * @param  {String | Event }   evt     äº‹ä»¶åæˆ–gmu.Eventå¯¹è±¡å®ä¾‹
+     * @param  {*} * ä»»æ„å‚æ•°
+     * @return {me} è¿”å›è‡ªèº«ï¼Œæ–¹ä¾¿é“¾å¼
      * @chainable
      */
     trigger: function(evt) {
@@ -242,7 +242,7 @@ module.exports =  {
         typeof evt === 'string' && (evt = new Event(evt));
 
         args = slice.call(arguments, 1);
-        evt.args = args; // handlerÖĞ¿ÉÒÔÖ±½ÓÍ¨¹ıe.args»ñÈ¡triggerÊı¾İ
+        evt.args = args; // handlerä¸­å¯ä»¥ç›´æ¥é€šè¿‡e.argsè·å–triggeræ•°æ®
         args.unshift(evt);
 
         events = findHandlers(this._events, evt.type);
@@ -255,7 +255,7 @@ module.exports =  {
                     (ev = events[i]).cb.apply(ev.ctx2, args)
                 ) {
 
-                    // Èç¹ûreturn falseÔòÏàµ±ÓÚstopPropagation()ºÍpreventDefault();
+                    // å¦‚æœreturn falseåˆ™ç›¸å½“äºstopPropagation()å’ŒpreventDefault();
                     stoped || (evt.stopPropagation(), evt.preventDefault());
                     break;
                 }

@@ -131,15 +131,15 @@ var Dialog = {
             t = me.el['__mm-wap-toast'] || (me.el['__mm-wap-toast'] = me.query("__mm-wap-toast"));
         t.push("touchmove");
         t.push(me.movePrevent.bind(me));
-        //遮罩不能滑动
+        //閬僵涓嶈兘婊戝姩
         me.addEvent.apply(me, t);
-        //window resize 调整弹窗布局
+        //window resize 璋冩暣寮圭獥甯冨眬
         me.resize = function(e) {
             me.refresh()
         };
         me.addEvent(window, "resize", me.resize);
         me.addEvent(window, "scroll", me.resize);
-        //关闭 确定 事件
+        //鍏抽棴 纭畾 浜嬩欢
         var success = me.el['__mm-wap-success'] || (me.el['__mm-wap-success'] = [me.query("__mm-wap-success")]);
         var close = me.el['__mm-wap-close'] || (me.el['__mm-wap-close'] = [me.query("__mm-wap-close")]);
         if (success != null && success.length > 0) {
