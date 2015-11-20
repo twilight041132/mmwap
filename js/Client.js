@@ -137,11 +137,11 @@ var slice = [].slice,
         }
     },
     client = {
-        reqUrl: {
+        reqUrl: {//odp.mmarket.com => zjw.mmarket.com
             index: "mm://index",
             launch: "mm://launchbrowser?url=",
             appdetail: "mm://appdetail?requestid=app_info_forward&contentid=",
-            downloadUri: "http://odp.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
+            downloadUri: "http://zjw.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
             wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",
             mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
             batchmmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
@@ -276,7 +276,8 @@ var slice = [].slice,
                 canIntent = Config["onIntent"],
                 reqUrl = me.reqUrl,
                 b = browserUtil,
-                timeout = b.ua.match(/(UCBrowser)|(UCWEB)/i)?3000:900;
+                timeout = b.ua.match(/(UCBrowser)|(UCWEB)/i)?3000:900,
+                args = slice.call(arguments);
             if (b.isWechat()) {
                 var dl = function() {
                     me.downloadApp(reqUrl.wetchartmm);
@@ -284,14 +285,16 @@ var slice = [].slice,
                 Dialog.one("dialog.after.show", function() {
                     Dialog.one("dialog.res.save", dl)
                 });
+                var flag = args[0] === 'detail' ? 'detail' : 'download';
                 Dialog.show({
-                    type: "weixin"
+                    type: "weixin",
+                    flag: flag
                 })
             } else if (!canIntent) {
                 me.downloadmm.apply(me, arguments);
             } else {
-                var t = Date.now(),
-                    args = slice.call(arguments);
+                var t = Date.now();
+                    //args = slice.call(arguments);
                 me.iframe(reqUrl.index);
                 var d = Date.now();
                 setTimeout(function() {
@@ -338,8 +341,7 @@ var slice = [].slice,
                 } else {
                     me.downloadApp(url.replace('{contentid}', ids))
                 }
-
-                if (type != v.act.d) {
+/*                if (type != v.act.d) {
                     var gargs = slice.call(arguments);
                     gargs.unshift("server.check.start");
                     var save = function() {
@@ -350,10 +352,26 @@ var slice = [].slice,
                             Dialog.one("dialog.res.save", save)
                         });
                         Dialog.show({
-                            type: "guid"
+                            type: "guid",
+                            flag: "download"
                         })
                     }, 1000)
-                }
+                }*/
+                var flag = type != v.act.d ? 'download' : 'detail';
+                var gargs = slice.call(arguments);
+                gargs.unshift("server.check.start");
+                var save = function() {
+                    Event.trigger.apply(Event, gargs);
+                };
+                setTimeout(function() {
+                    Dialog.one("dialog.after.show", function() {
+                        Dialog.one("dialog.res.save", save)
+                    });
+                    Dialog.show({
+                        type: "guid",
+                        flag: flag
+                    })
+                }, 1000)
             }
         },
         getMMUrl: function(type) {

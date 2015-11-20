@@ -55,7 +55,7 @@ Event.on("server.check.error", function(evt) {
     if(method !== "downloadmm"){//二次激活失败时，直接下载mm,不走error流程
         args.unshift("error");//调用error方法，走二次激活流程
     }else {
-        //如果是打开页面的方法，二次激活失败不走MM下载流程
+        //如果是open方法(type=false)，二次激活失败不走MM下载流程
         var origMethod = args[1];
         if (args.length === 4 && origMethod === 'open' && !args[3] ){
             return;
