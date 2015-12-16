@@ -141,10 +141,10 @@ var slice = [].slice,
             index: "mm://index",
             launch: "mm://launchbrowser?url=",
             appdetail: "mm://appdetail?requestid=app_info_forward&contentid=",
-            downloadUri: "http://zjw.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
+            downloadUri: "http://odp.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
             wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",
             mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
-            batchmmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
+            batchmmrelaapp: "http://odp.mmarket.com.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
             MM_CONTENT_ID: "300000863435"
         },
         reqMethod: {
@@ -278,18 +278,22 @@ var slice = [].slice,
                 b = browserUtil,
                 timeout = b.ua.match(/(UCBrowser)|(UCWEB)/i)?3000:900,
                 args = slice.call(arguments);
+            //open 如果是静默打开，微信不弹出提示check=false
             if (b.isWechat()) {
-                var dl = function() {
-                    me.downloadApp(reqUrl.wetchartmm);
-                };
-                Dialog.one("dialog.after.show", function() {
-                    Dialog.one("dialog.res.save", dl)
-                });
-                var flag = args[0] === 'detail' ? 'detail' : 'download';
-                Dialog.show({
-                    type: "weixin",
-                    flag: flag
-                })
+                var is_alert = args[0] === 'open' && !args[2];
+                if(!is_alert){
+                    var dl = function() {
+                        me.downloadApp(reqUrl.wetchartmm);
+                    };
+                    Dialog.one("dialog.after.show", function() {
+                        Dialog.one("dialog.res.save", dl)
+                    });
+                    var flag = (args[0] === 'detail' || args[0] === 'open') ? 'detail' : 'download';
+                    Dialog.show({
+                        type: "weixin",
+                        flag: flag
+                    })
+                }
             } else if (!canIntent) {
                 me.downloadmm.apply(me, arguments);
             } else {
@@ -357,7 +361,7 @@ var slice = [].slice,
                         })
                     }, 1000)
                 }*/
-                var flag = type != v.act.d ? 'download' : 'detail';
+                var flag = (type == v.act.d || type == 'open' ) ? 'detail' : 'download';
                 var gargs = slice.call(arguments);
                 gargs.unshift("server.check.start");
                 var save = function() {
