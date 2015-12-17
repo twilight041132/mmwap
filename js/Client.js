@@ -144,7 +144,7 @@ var slice = [].slice,
             downloadUri: "http://odp.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
             wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",
             mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
-            batchmmrelaapp: "http://odp.mmarket.com.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
+            batchmmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
             MM_CONTENT_ID: "300000863435"
         },
         reqMethod: {
@@ -276,11 +276,14 @@ var slice = [].slice,
                 canIntent = Config["onIntent"],
                 reqUrl = me.reqUrl,
                 b = browserUtil,
-                timeout = b.ua.match(/(UCBrowser)|(UCWEB)/i)?3000:900,
+                isUc = b.ua.match(/(UCBrowser)|(UCWEB)/i) ? 1 : 0,
+                timeout = isUc ? 3000 : 900,
+                //timeout = 900,
                 args = slice.call(arguments);
+            var m = args[0];
             //open 如果是静默打开，微信不弹出提示check=false
             if (b.isWechat()) {
-                var is_alert = args[0] === 'open' && !args[2];
+                var is_alert = m === 'open' && !args[2];
                 if(!is_alert){
                     var dl = function() {
                         me.downloadApp(reqUrl.wetchartmm);
@@ -295,22 +298,55 @@ var slice = [].slice,
                     })
                 }
             } else if (!canIntent) {
-                me.downloadmm.apply(me, arguments);
+                me.downloadmm.apply(me, args);
             } else {
-                var t = Date.now();
+                var t = Date.now(),
+                    needCheckAgain = m != 'open' && m != 'detail';
                     //args = slice.call(arguments);
-                me.iframe(reqUrl.index);
-                var d = Date.now();
-                setTimeout(function() {
-                    var e = Date.now();
-                    //					debug.log(e - t);
-                    //时间判断方法个别浏览器无效，如UC，基本js不挂起
-                    if (!t || e - t < timeout + 200) {
-                        args.unshift("downloadmm");
-                    }
-                    args.unshift("server.check.start");
+                if(m === 'open'){
+                    var url = args[1];
+                    !!url && !isUc ? me.iframe(reqUrl.launch + url) : me.iframe(reqUrl.index);
+                }else if(m === 'detail'){
+                    var id = args[1];
+                    !!id && !isUc ? me.iframe(reqUrl.appdetail + id ) : me.iframe(reqUrl.index);
+                } else{
+                    me.iframe(reqUrl.index);
+                }
+                //var d = Date.now();
+
+                /*
+                    UC浏览器走轮训流程
+                 */
+                /*if(b.ua.match(/(UCBrowser)|(UCWEB)/i)){
+                    args.unshift("downloadmm")
+                    args.unshift("server.longcheck.start");
                     Event.trigger.apply(Event,args);
-                }, timeout)
+                }else{*/
+                    setTimeout(function() {
+                        var e = Date.now();
+                        //					debug.log(e - t);
+                        //时间判断方法个别浏览器无效，如UC，基本js不挂起
+                        /*
+                         open / detail scheme直接传url/contentid跳到指定页面，所以不需要做二次校验，
+                         直接判断为未下载： me.downloadmm
+                         二次校验流程：args.unshift("downloadmm")
+                         */
+                        if (!t || e - t < timeout + 200) {//是打开页面的，判断调起失败，直接下载MM
+                            needCheckAgain || isUc ? args.unshift("downloadmm") : me.downloadmm.apply(me, args);
+                        }
+
+                        /*
+                         判断是否需要走二次校验
+                         如果是打开页面的，不需要再做校验
+                         */
+                        if(needCheckAgain || isUc){
+                            args.unshift("server.check.start");
+                            Event.trigger.apply(Event,args);
+                        }
+
+                    }, timeout);
+                /*}*/
+
             }
         },
         downloadmm: function(method) {
@@ -388,7 +424,8 @@ var slice = [].slice,
             } else { //单应用下载 mm下载路径
                 return reqUrl.mmrelaapp.replace("{channelid}", Config["channelid"]);
             }
-        }
+        },
+        none: function(){}//什么都不做，空的调用
 
     };
 

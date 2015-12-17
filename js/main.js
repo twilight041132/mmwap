@@ -39,6 +39,9 @@ ServerManager.init();
  * MM检测结果会触发success/error事件，
  * evt.arg为触发MM检测的参数，arg[0]为Client.method 名称，
  * 通过Client.execute进行回调
+ *
+ * 注意： 20151217 bug修复：杀死MM，如果是调起页面，调起MM时不开首页，直接开具体页面
+ * UC二次校验成功，不二次打开页面
  */
 Event.on("server.check.success", function(evt) {
     var args = evt.args.slice(1);
