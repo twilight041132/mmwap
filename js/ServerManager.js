@@ -26,7 +26,7 @@ var isCheck = false,
     检测MM失败会把参数传给error事件回调
  */
 function check(evt) {
-    console.log('check' + isCheck);
+    //console.log('check' + isCheck);
     hasFlag();
     check_args = slice.call(evt.args, 1);
     if (isCheck) return;
@@ -126,7 +126,7 @@ function afterCheck(evt) {
             Event.trigger.apply(Event, check_args);
         };
     removeAll();
-    console.log('afterCheck');
+    //console.log('afterCheck');
     isCheck = false;
     port = '';
     errCount = 0;
