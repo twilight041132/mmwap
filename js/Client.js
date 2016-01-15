@@ -1,6 +1,6 @@
 /**
  * Created by linxiaojie on 2015/10/14.
- * ¿Í»§¶ËÌá¹©°æ±¾¹¦ÄÜ
+ * å®¢æˆ·ç«¯æä¾›ç‰ˆæœ¬åŠŸèƒ½
  */
 var Event = require('./Event'),
     Params = require('./Params'),
@@ -10,22 +10,22 @@ var Event = require('./Event'),
 var slice = [].slice,
     versionUtil = {
         act: {
-            b: 'batchdownload', //ÅúÁ¿ÏÂÔØ
-            dl: 'download', //µ¥Ó¦ÓÃÏÂÔØ
-            d: 'detail' //ÏêÇé
+            b: 'batchdownload', //æ‰¹é‡ä¸‹è½½
+            dl: 'download', //å•åº”ç”¨ä¸‹è½½
+            d: 'detail' //è¯¦æƒ…
         },
         ls: {
             "MM": {},
             "MMLITE": {}
         },
         init: function() {
-            //MMÕıÊ½°æ±¾£¬°æ±¾¹¦ÄÜ£º
+            //MMæ­£å¼ç‰ˆæœ¬ï¼Œç‰ˆæœ¬åŠŸèƒ½ï¼š
             var me = this;
             me.ls["MM"][me.act.b] = 510;
             me.ls["MM"][me.act.dl] = 501;
             me.ls["MM"][me.act.d] = 500;
 
-            //MMLite°æ±¾£¬°æ±¾¹¦ÄÜ£º
+            //MMLiteç‰ˆæœ¬ï¼Œç‰ˆæœ¬åŠŸèƒ½ï¼š
             me.ls["MMLITE"][me.act.b] = 200;
             me.ls["MMLITE"][me.act.dl] = 200;
             me.ls["MMLITE"][me.act.d] = 200;
@@ -40,7 +40,7 @@ var slice = [].slice,
                     v = parseInt(v, 10);
                     //debug.log(vtype)
                     var base = me.ls[vtype][type];
-                    if (base && v >= base) { //¸ßÓÚ»òµÈÓÚÖ¸¶¨¹¦ÄÜ°æ±¾ÔòÖ§³Ö
+                    if (base && v >= base) { //é«˜äºæˆ–ç­‰äºæŒ‡å®šåŠŸèƒ½ç‰ˆæœ¬åˆ™æ”¯æŒ
                         rs = true;
                     }
                 }
@@ -48,7 +48,7 @@ var slice = [].slice,
             return rs;
         },
         /**
-         * ¸ßÓÚÖ¸¶¨°æ±¾·µ»Øture,·ñÔò·µ»Øfalse;
+         * é«˜äºæŒ‡å®šç‰ˆæœ¬è¿”å›ture,å¦åˆ™è¿”å›false;
          */
         checkVersion: function(b) {
             var me = this,
@@ -88,16 +88,16 @@ var slice = [].slice,
             var appname = '',
                 ua = this.ua;
             var browser = {
-                whatchar: ua.match(/MicroMessenger/i) ? 'Î¢ĞÅ' : '',
-                uc: ua.match(/(UCBrowser)|(UCWEB)/i) ? 'UCä¯ÀÀÆ÷' : '',
-                qq: ua.match(/MQQBrowser/i) ? 'QQä¯ÀÀÆ÷' : '',
-                op: ua.match(/oupeng/i) ? 'Å·Åóä¯ÀÀÆ÷' : '',
-                ay: ua.match(/MxBrowser/i) ? 'åÛÓÎä¯ÀÀÆ÷' : '',
-                lb: ua.match(/LieBao/i) ? 'ÁÔ±ªä¯ÀÀÆ÷' : '',
-                xm: ua.match(/MiuiBrowser/i) ? 'Ğ¡Ã×ä¯ÀÀÆ÷' : '',
-                bd: ua.match(/baidubrowser/i) ? '°Ù¶Èä¯ÀÀÆ÷' : '',
-                b360: ua.match(/360 aphone/i) ? '360ä¯ÀÀÆ÷' : '',
-                sg: ua.match(/sogoumobilebrowser/i) ? 'ËÑ¹·ä¯ÀÀÆ÷' : ''
+                whatchar: ua.match(/MicroMessenger/i) ? 'å¾®ä¿¡' : '',
+                uc: ua.match(/(UCBrowser)|(UCWEB)/i) ? 'UCæµè§ˆå™¨' : '',
+                qq: ua.match(/MQQBrowser/i) ? 'QQæµè§ˆå™¨' : '',
+                op: ua.match(/oupeng/i) ? 'æ¬§æœ‹æµè§ˆå™¨' : '',
+                ay: ua.match(/MxBrowser/i) ? 'é¨æ¸¸æµè§ˆå™¨' : '',
+                lb: ua.match(/LieBao/i) ? 'çŒè±¹æµè§ˆå™¨' : '',
+                xm: ua.match(/MiuiBrowser/i) ? 'å°ç±³æµè§ˆå™¨' : '',
+                bd: ua.match(/baidubrowser/i) ? 'ç™¾åº¦æµè§ˆå™¨' : '',
+                b360: ua.match(/360 aphone/i) ? '360æµè§ˆå™¨' : '',
+                sg: ua.match(/sogoumobilebrowser/i) ? 'æœç‹—æµè§ˆå™¨' : ''
             };
             for (var b in browser) {
                 if (browser[b] != '') {
@@ -111,16 +111,16 @@ var slice = [].slice,
             var result = false,
                 ua = this.ua;
             var browser = {
-                //			whatchar:ua.match(/MicroMessenger/i)?'Î¢ĞÅ':'',
-                //			uc:ua.match(/(UCBrowser)|(UCWEB)/i)?'UCä¯ÀÀÆ÷':'',
-                qq: ua.match(/MQQBrowser/i) ? 'QQä¯ÀÀÆ÷' : '',
-                //			op:ua.match(/oupeng/i)?'Å·Åóä¯ÀÀÆ÷':'',
-                ay: ua.match(/MxBrowser/i) ? 'åÛÓÎä¯ÀÀÆ÷' : '',
-                lb: ua.match(/LieBao/i) ? 'ÁÔ±ªä¯ÀÀÆ÷' : '',
-                //			xm:ua.match(/MiuiBrowser/i)?'Ğ¡Ã×ä¯ÀÀÆ÷':'',
-                bd: ua.match(/baidubrowser/i) ? '°Ù¶Èä¯ÀÀÆ÷' : '',
-                //			b360:ua.match(/360 aphone browser/i)?'360ä¯ÀÀÆ÷':'',
-                //			sg:ua.match(/sogoumobilebrowser/i)?'ËÑ¹·ä¯ÀÀÆ÷':''
+                //			whatchar:ua.match(/MicroMessenger/i)?'å¾®ä¿¡':'',
+                //			uc:ua.match(/(UCBrowser)|(UCWEB)/i)?'UCæµè§ˆå™¨':'',
+                qq: ua.match(/MQQBrowser/i) ? 'QQæµè§ˆå™¨' : '',
+                //			op:ua.match(/oupeng/i)?'æ¬§æœ‹æµè§ˆå™¨':'',
+                ay: ua.match(/MxBrowser/i) ? 'é¨æ¸¸æµè§ˆå™¨' : '',
+                lb: ua.match(/LieBao/i) ? 'çŒè±¹æµè§ˆå™¨' : '',
+                //			xm:ua.match(/MiuiBrowser/i)?'å°ç±³æµè§ˆå™¨':'',
+                bd: ua.match(/baidubrowser/i) ? 'ç™¾åº¦æµè§ˆå™¨' : '',
+                //			b360:ua.match(/360 aphone browser/i)?'360æµè§ˆå™¨':'',
+                //			sg:ua.match(/sogoumobilebrowser/i)?'æœç‹—æµè§ˆå™¨':''
             };
             for (var b in browser) {
                 if (browser[b] != '') {
@@ -133,11 +133,11 @@ var slice = [].slice,
         getCurrentBs: function() {
             var me = this,
                 bsName = this.bs();
-            return bsName != '' ? bsName : 'ä¯ÀÀÆ÷';
+            return bsName != '' ? bsName : 'æµè§ˆå™¨';
         }
     },
     client = {
-        reqUrl: {
+        reqUrl: {//odp.mmarket.com => zjw.mmarket.com
             index: "mm://index",
             launch: "mm://launchbrowser?url=",
             appdetail: "mm://appdetail?requestid=app_info_forward&contentid=",
@@ -148,10 +148,10 @@ var slice = [].slice,
             MM_CONTENT_ID: "300000863435"
         },
         reqMethod: {
-            queryapp: 'queryapp&appname=', //²éÑ¯Ó¦ÓÃÊÇ·ñÏÂÔØ
-            querydownprogress: 'querydownprogress&contentid=', //²éÑ¯Ó¦ÓÃÏÂÔØ½ø¶È
-            download: 'download&url=', //µ÷ÆğMMÏÂÔØ
-            jump: 'jump&url=', //Ìø×ªÖ¸¶¨Ò³Ãæ &appname=''
+            queryapp: 'queryapp&appname=', //æŸ¥è¯¢åº”ç”¨æ˜¯å¦ä¸‹è½½
+            querydownprogress: 'querydownprogress&contentid=', //æŸ¥è¯¢åº”ç”¨ä¸‹è½½è¿›åº¦
+            download: 'download&url=', //è°ƒèµ·MMä¸‹è½½
+            jump: 'jump&url=', //è·³è½¬æŒ‡å®šé¡µé¢ &appname=''
             batchdownload: 'batchdownload&contentids='
         },
         run: function(app, isOpen) {
@@ -276,34 +276,82 @@ var slice = [].slice,
                 canIntent = Config["onIntent"],
                 reqUrl = me.reqUrl,
                 b = browserUtil,
-                timeout = b.ua.match(/(UCBrowser)|(UCWEB)/i)?3000:900;
+                isUc = b.ua.match(/(UCBrowser)|(UCWEB)/i),
+                isUq = isUc || b.isQq() ?  1 : 0,
+                timeout = isUc ?  2000 : 900,
+                //timeout = 900,
+                args = slice.call(arguments);
+            var m = args[0];
+            var is_alert = m === 'open' && !args[2];
+            //alert('222')
+            //open å¦‚æœæ˜¯é™é»˜æ‰“å¼€ï¼Œå¾®ä¿¡ä¸å¼¹å‡ºæç¤ºcheck=false
             if (b.isWechat()) {
-                var dl = function() {
-                    me.downloadApp(reqUrl.wetchartmm);
-                };
-                Dialog.one("dialog.after.show", function() {
-                    Dialog.one("dialog.res.save", dl)
-                });
-                Dialog.show({
-                    type: "weixin"
-                })
+                if(!is_alert){
+                    var dl = function() {
+                        me.downloadApp(reqUrl.wetchartmm);
+                    };
+                    Dialog.one("dialog.after.show", function() {
+                        Dialog.one("dialog.res.save", dl)
+                    });
+                    var flag = (args[0] === 'detail' || args[0] === 'open') ? 'detail' : 'download';
+                    Dialog.show({
+                        type: "weixin",
+                        flag: flag
+                    })
+                }
             } else if (!canIntent) {
-                me.downloadmm.apply(me, arguments);
+                me.downloadmm.apply(me, args);
             } else {
                 var t = Date.now(),
-                    args = slice.call(arguments);
-                me.iframe(reqUrl.index);
-                var d = Date.now();
-                setTimeout(function() {
-                    var e = Date.now();
-                    //					debug.log(e - t);
-                    //Ê±¼äÅĞ¶Ï·½·¨¸ö±ğä¯ÀÀÆ÷ÎŞĞ§£¬ÈçUC£¬»ù±¾js²»¹ÒÆğ
-                    if (!t || e - t < timeout + 200) {
-                        args.unshift("downloadmm");
-                    }
-                    args.unshift("server.check.start");
+                    needCheckAgain = m != 'open' && m != 'detail';
+                    //args = slice.call(arguments);
+                if(m === 'open'){
+                    var url = args[1];
+                    !!url && !isUq ? me.iframe(reqUrl.launch + encodeURIComponent(url)) : me.iframe(reqUrl.index);
+                }else if(m === 'detail'){
+                    var id = args[1];
+                    !!id && !isUq ? me.iframe(reqUrl.appdetail + id ) : me.iframe(reqUrl.index);
+                } else{
+                    me.iframe(reqUrl.index);
+                }
+                //var d = Date.now();
+
+                /*
+                    UCæµè§ˆå™¨èµ°è½®è®­æµç¨‹
+                 */
+                /*if(b.ua.match(/(UCBrowser)|(UCWEB)/i)){
+                    args.unshift("downloadmm")
+                    args.unshift("server.longcheck.start");
                     Event.trigger.apply(Event,args);
-                }, timeout)
+                }else{*/
+                    var cb = function(){
+                        args.unshift("downloadmm");
+                        args.unshift("server.check.start");
+                        Event.trigger.apply(Event,args);
+                    };
+                    setTimeout(function() {
+                        var e = Date.now();
+                        //					debug.log(e - t);
+                        //æ—¶é—´åˆ¤æ–­æ–¹æ³•ä¸ªåˆ«æµè§ˆå™¨æ— æ•ˆï¼Œå¦‚UCï¼ŒåŸºæœ¬jsä¸æŒ‚èµ·
+                        /*
+                         open / detail schemeç›´æ¥ä¼ url/contentidè·³åˆ°æŒ‡å®šé¡µé¢ï¼Œæ‰€ä»¥ä¸éœ€è¦åšäºŒæ¬¡æ ¡éªŒï¼Œ
+                         ç›´æ¥åˆ¤æ–­ä¸ºæœªä¸‹è½½ï¼š me.downloadmm
+                         äºŒæ¬¡æ ¡éªŒæµç¨‹ï¼šargs.unshift("downloadmm")
+                         */
+                        if(isUq){// UCæˆ–QQèµ°äºŒæ¬¡æ¿€æ´»æµç¨‹
+                            cb();
+                        }else{
+                            if (!t || e - t < timeout + 200) {//æ˜¯æ‰“å¼€é¡µé¢çš„ï¼Œåˆ¤æ–­è°ƒèµ·å¤±è´¥ï¼Œç›´æ¥ä¸‹è½½MM,æ’é™¤ä¸éœ€è¦ä¸‹è½½MMçš„ï¼ˆis_alert)
+                                needCheckAgain ?  (
+                                    cb()
+                                ) : !is_alert && me.downloadmm.apply(me, args);
+                            }else if(needCheckAgain){//æˆåŠŸè°ƒèµ·ï¼Œå¦‚æœæ˜¯éè¯¦æƒ…çš„ï¼Œéœ€è¦åšäºŒæ¬¡è°ƒèµ·ï¼Œå› ä¸ºschemeçš„æ–¹å¼æ²¡æœ‰ç›´æ¥ä¸‹è½½åº”ç”¨
+                                cb();
+                            }
+                        }
+                    }, timeout);
+                /*}*/
+
             }
         },
         downloadmm: function(method) {
@@ -338,8 +386,7 @@ var slice = [].slice,
                 } else {
                     me.downloadApp(url.replace('{contentid}', ids))
                 }
-
-                if (type != v.act.d) {
+/*                if (type != v.act.d) {
                     var gargs = slice.call(arguments);
                     gargs.unshift("server.check.start");
                     var save = function() {
@@ -350,23 +397,40 @@ var slice = [].slice,
                             Dialog.one("dialog.res.save", save)
                         });
                         Dialog.show({
-                            type: "guid"
+                            type: "guid",
+                            flag: "download"
                         })
                     }, 1000)
-                }
+                }*/
+                var flag = (type == v.act.d || type == 'open' ) ? 'detail' : 'download';
+                var gargs = slice.call(arguments);
+                gargs.unshift("server.check.start");
+                var save = function() {
+                    Event.trigger.apply(Event, gargs);
+                };
+                setTimeout(function() {
+                    Dialog.one("dialog.after.show", function() {
+                        Dialog.one("dialog.res.save", save)
+                    });
+                    Dialog.show({
+                        type: "guid",
+                        flag: flag
+                    })
+                }, 1000)
             }
         },
         getMMUrl: function(type) {
             var me = this,
                 v = versionUtil,
                 reqUrl = me.reqUrl;
-            //ÅúÁ¿ÏÂÔØÓ¦ÓÃ mmÏÂÔØÂ·¾¶
+            //æ‰¹é‡ä¸‹è½½åº”ç”¨ mmä¸‹è½½è·¯å¾„
             if (typeof type != "undefined" && type == v.act.b) {
                 return reqUrl.batchmmrelaapp.replace("{channelid}", Config["channelid"]);
-            } else { //µ¥Ó¦ÓÃÏÂÔØ mmÏÂÔØÂ·¾¶
+            } else { //å•åº”ç”¨ä¸‹è½½ mmä¸‹è½½è·¯å¾„
                 return reqUrl.mmrelaapp.replace("{channelid}", Config["channelid"]);
             }
-        }
+        },
+        none: function(){}//ä»€ä¹ˆéƒ½ä¸åšï¼Œç©ºçš„è°ƒç”¨
 
     };
 

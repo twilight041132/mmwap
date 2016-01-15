@@ -9,7 +9,7 @@ var Event = require('./Event'),
     Config = require('./Config'),
     slice = [].slice;
 
-//���ܼ��
+//功能检测
 if (!Function.prototype.bind) {
     Function.prototype.bind = function(obj) {
         var slice = [].slice,
@@ -28,20 +28,25 @@ if (!Function.prototype.bind) {
 }
 
 /*
-    ע��У�����
+ 注册校验服务
  */
 ServerManager.init();
 
 
 /*
  *
- * ע�Ṧ���б�
+ * 注册功能列表
+ * MM检测结果会触发success/error事件，
+ * evt.arg为触发MM检测的参数，arg[0]为Client.method 名称，
+ * 通过Client.execute进行回调
  *
+ * 注意： 20151217 bug修复：杀死MM，如果是调起页面，调起MM时不开首页，直接开具体页面
+ * UC二次校验成功，不二次打开页面
  */
 Event.on("server.check.success", function(evt) {
     var args = evt.args.slice(1);
     var method = args&&args[0]||'';
-    if(method == "downloadmm"){//���μ���ɹ�ʱ
+    if(method == "downloadmm"){//二次激活成功时
         args.shift()
     }
     Client.execute.apply(Client, args);
@@ -49,18 +54,25 @@ Event.on("server.check.success", function(evt) {
 Event.on("server.check.error", function(evt) {
     var args = slice.call(evt.args, 1);
     var method = args && args[0] || '';
-    if (method === 'open') {
-        return;
-    }else if(method !== "downloadmm"){//���μ���ʧ��ʱ��ֱ������mm,����error����
-        args.unshift("error");
+
+    if(method !== "downloadmm"){//二次激活失败时，直接下载mm,不走error流程
+        args.unshift("error");//调用error方法，走二次激活流程
+    }else {
+        //如果是open方法(type=false)，二次激活失败不走MM下载流程
+        var origMethod = args[1];
+        if (args.length === 4 && origMethod === 'open' && !args[3] ){
+            return;
+        }
     }
+
+
     Client.execute.apply(Client, args);
 });
 
 
 /*
  *
- * Dialog��ʼ��
+ * Dialog初始化
  *
  */
 Util.each(document.querySelectorAll("script"), function(a) {
@@ -73,20 +85,25 @@ Util.each(document.querySelectorAll("script"), function(a) {
     }
 });
 
-//ָ�������ϱ�¶�ӿ�
+//指定环境上暴露接口
 function init(context){
     context.mm = {
         download: function(id) {
-            Event.trigger("server.check.start", "download", id)
+            Event.trigger("server.check.start", "download", id);
         },
         detail: function(id) {
-            Event.trigger("server.check.start", "detail", id)
+            Event.trigger("server.check.start", "detail", id);
         },
-        open: function(url) {
-            Event.trigger("server.check.start", "open", url)
+        /*
+            使用MM打开指定url地址
+            @param check {boolean} false:调起失败的时候，不跑MM下载流程
+        */
+        open: function(url, check) {
+            check === undefined && (check = true);
+            Event.trigger("server.check.start", "open", url, check);
         },
         /**
-         * @param {Object} arg:������ַ������ַ����á�/���ָ�Ӧ��ID
+         * @param {Object} arg:数组或字符串；字符串用“/”分隔应用ID
          */
         batchDownload: function(arg) {
             var me = this;

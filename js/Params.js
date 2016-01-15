@@ -1,6 +1,7 @@
 /**
  * Created by linxiaojie on 2015/10/14.
- * 功能操作相关参数
+ * 鍔熻兘鎿嶄綔鐩稿叧鍙傛暟
+ * socket鏂瑰紡鍦板潃閰嶇疆锛宻chema鏂瑰紡閰嶇疆鍜宻ocket璋冪敤鐨勭浉鍏冲弬鏁板啓鍦╟lient閲岄潰
  */
 var Util = require('./Util'),
     url = "http://{adress}:{port}/moversion",
@@ -18,8 +19,8 @@ if (!!navigator.userAgent.toLowerCase().match(/MicroMessenger|MQQBrowser/i)) {
 
 
 module.exports = {
-    versionUrl: url, //mm激活地址
-    baseUrl: baseUrl, //mm功能操作地址
+    versionUrl: url, //mm婵�娲诲湴鍧�
+    baseUrl: baseUrl, //mm鍔熻兘鎿嶄綔鍦板潃
     DAEMON: "mmcd",
     mmpkg: "com.aspire.mm",
     version: "mmversion",
@@ -30,4 +31,4 @@ module.exports = {
             port = Util.getCookie(me.port);
         return baseUrl.replace("{port}", port);
     }
-}
+};
