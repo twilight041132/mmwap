@@ -120,7 +120,7 @@ function beforeCheck() {
 };
 
 /*
- 只调起指定版本，临时处理
+  只调起指定版本，临时处理
  */
 function support(base) {
     var v = Util.getCookie(Params.version),

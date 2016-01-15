@@ -271,6 +271,7 @@ var slice = [].slice,
                 me.run(mmap, true);
             }
         },
+
         error: function() {
             var me = this,
                 canIntent = Config["onIntent"],
