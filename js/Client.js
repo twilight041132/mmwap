@@ -142,7 +142,7 @@ var slice = [].slice,
             launch: "mm://launchbrowser?url=",
             appdetail: "mm://appdetail?requestid=app_info_forward&contentid=",
             downloadUri: "http://odp.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
-            wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",
+            wetchartmm: "http://fusion.qq.com/cgi-bin/qzapps/unified_jump?appid=86443&from=groupmessage&isTimeline=false&actionFlag=0&params=pname%3Dcom.aspire.mm%26versioncode%3D530%26channelid%3D%26actionflag%3D0&isappinstalled=0",
             mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
             batchmmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
             MM_CONTENT_ID: "300000863435"
