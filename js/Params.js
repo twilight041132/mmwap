@@ -31,5 +31,6 @@ module.exports = {
             port = Util.getCookie(me.port);
         return baseUrl.replace("{port}", port);
     },
-    ovderVersion: 540
+    ovderVersion: 540,
+    useGuid: !1
 };

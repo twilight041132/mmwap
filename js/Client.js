@@ -142,8 +142,7 @@ var slice = [].slice,
             launch: "mm://launchbrowser?url=",
             appdetail: "mm://appdetail?requestid=app_info_forward&contentid=",
             downloadUri: "http://odp.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
-            wetchartmm: "http://fusion.qq.com/cgi-bin/qzapps/unified_jump?appid=86443&from=groupmessage&isTimeline=false&actionFlag=0&params=pname%3Dcom.aspire.mm%26versioncode%3D530%26channelid%3D%26actionflag%3D0&isappinstalled=0",
-            mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
+            wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",            mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
             batchmmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
             MM_CONTENT_ID: "300000863435"
         },
@@ -291,14 +290,18 @@ var slice = [].slice,
                     var dl = function() {
                         me.downloadApp(reqUrl.wetchartmm);
                     };
-                    Dialog.one("dialog.after.show", function() {
-                        Dialog.one("dialog.res.save", dl)
-                    });
-                    var flag = (args[0] === 'detail' || args[0] === 'open') ? 'detail' : 'download';
-                    Dialog.show({
-                        type: "weixin",
-                        flag: flag
-                    })
+                    if(Params.useGuid){
+                        Dialog.one("dialog.after.show", function() {
+                            Dialog.one("dialog.res.save", dl)
+                        });
+                        var flag = (args[0] === 'detail' || args[0] === 'open') ? 'detail' : 'download';
+                        Dialog.show({
+                            type: "weixin",
+                            flag: flag
+                        })
+                    }else{
+                        dl();
+                    }
                 }
             } /*else if (!canIntent) {
                 me.downloadmm.apply(me, args);
@@ -406,21 +409,23 @@ var slice = [].slice,
                         })
                     }, 1000)
                 }*/
-                var flag = (type == v.act.d || type == 'open' ) ? 'detail' : 'download';
-                var gargs = slice.call(arguments);
-                gargs.unshift("server.check.start");
-                var save = function() {
-                    Event.trigger.apply(Event, gargs);
-                };
-                setTimeout(function() {
-                    Dialog.one("dialog.after.show", function() {
-                        Dialog.one("dialog.res.save", save)
-                    });
-                    Dialog.show({
-                        type: "guid",
-                        flag: flag
-                    })
-                }, 1000)
+                if(Params.useGuid){
+                    var flag = (type == v.act.d || type == 'open' ) ? 'detail' : 'download';
+                    var gargs = slice.call(arguments);
+                    gargs.unshift("server.check.start");
+                    var save = function() {
+                        Event.trigger.apply(Event, gargs);
+                    };
+                    setTimeout(function() {
+                        Dialog.one("dialog.after.show", function() {
+                            Dialog.one("dialog.res.save", save)
+                        });
+                        Dialog.show({
+                            type: "guid",
+                            flag: flag
+                        })
+                    }, 1000)
+                }
             }
         },
         getMMUrl: function(type) {
