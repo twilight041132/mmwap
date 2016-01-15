@@ -30,5 +30,6 @@ module.exports = {
         var me = this,
             port = Util.getCookie(me.port);
         return baseUrl.replace("{port}", port);
-    }
+    },
+    ovderVersion: 530
 };

@@ -21,14 +21,14 @@ var slice = [].slice,
         init: function() {
             //MM正式版本，版本功能：
             var me = this;
-            me.ls["MM"][me.act.b] = 510;
-            me.ls["MM"][me.act.dl] = 501;
-            me.ls["MM"][me.act.d] = 500;
+            me.ls["MM"][me.act.b] = 510 > Params.ovderVersion ? 510 : Params.ovderVersion;
+            me.ls["MM"][me.act.dl] = 501 > Params.ovderVersion ? 501 : Params.ovderVersion;
+            me.ls["MM"][me.act.d] = 500 > Params.ovderVersion ? 500 : Params.ovderVersion;
 
-            //MMLite版本，版本功能：
-            me.ls["MMLITE"][me.act.b] = 200;
-            me.ls["MMLITE"][me.act.dl] = 200;
-            me.ls["MMLITE"][me.act.d] = 200;
+            //MMLite版本，版本功能：//屏蔽普通版
+            me.ls["MMLITE"][me.act.b] = 5000;
+            me.ls["MMLITE"][me.act.dl] = 5000;
+            me.ls["MMLITE"][me.act.d] = 5000;
         },
         support: function(type) {
             var me = this,
@@ -299,7 +299,7 @@ var slice = [].slice,
                         flag: flag
                     })
                 }
-            } else if (!canIntent) {
+            } /*else if (!canIntent) {
                 me.downloadmm.apply(me, args);
             } else {
                 var t = Date.now(),
@@ -316,14 +316,14 @@ var slice = [].slice,
                 }
                 //var d = Date.now();
 
-                /*
+                /!*
                     UC浏览器走轮训流程
-                 */
-                /*if(b.ua.match(/(UCBrowser)|(UCWEB)/i)){
+                 *!/
+                /!*if(b.ua.match(/(UCBrowser)|(UCWEB)/i)){
                     args.unshift("downloadmm")
                     args.unshift("server.longcheck.start");
                     Event.trigger.apply(Event,args);
-                }else{*/
+                }else{*!/
                     var cb = function(){
                         args.unshift("downloadmm");
                         args.unshift("server.check.start");
@@ -333,11 +333,11 @@ var slice = [].slice,
                         var e = Date.now();
                         //					debug.log(e - t);
                         //时间判断方法个别浏览器无效，如UC，基本js不挂起
-                        /*
+                        /!*
                          open / detail scheme直接传url/contentid跳到指定页面，所以不需要做二次校验，
                          直接判断为未下载： me.downloadmm
                          二次校验流程：args.unshift("downloadmm")
-                         */
+                         *!/
                         if(isUq){// UC或QQ走二次激活流程
                             cb();
                         }else{
@@ -350,8 +350,11 @@ var slice = [].slice,
                             }
                         }
                     }, timeout);
-                /*}*/
+                /!*}*!/
 
+            }*/
+            else{
+                !is_alert && me.downloadmm.apply(me, args);
             }
         },
         downloadmm: function(method) {

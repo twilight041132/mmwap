@@ -16,14 +16,14 @@ var isCheck = false,
     check_args = [], //服务端校验传入的参数;
     temp = null;
 /*    longCheckTime = 3000, //长轮训检测间隔时间
-    longCheckNum = 3,//长轮训检测次数
-    tempLongCheckNum = 0; //长轮训已检测次数*/
+ longCheckNum = 3,//长轮训检测次数
+ tempLongCheckNum = 0; //长轮训已检测次数*/
 
 /*
-    开始检测MM，下载、详情等调用MM功能都会触发次事件，
-    evt参数为 method，其他参数；
-    检测MM成功会把参数传给success事件回调
-    检测MM失败会把参数传给error事件回调
+ 开始检测MM，下载、详情等调用MM功能都会触发次事件，
+ evt参数为 method，其他参数；
+ 检测MM成功会把参数传给success事件回调
+ 检测MM失败会把参数传给error事件回调
  */
 function check(evt) {
     //console.log('check' + isCheck);
@@ -35,19 +35,19 @@ function check(evt) {
 };
 
 /*
-    激活失败时，可以进行一个长时间的轮训操作
+ 激活失败时，可以进行一个长时间的轮训操作
  */
 /*function longCheck(evt){
-    console.log('longCheck' + isCheck);
-    hasFlag();
-    check_args = slice.call(evt.args, 1);
-    if (isCheck) return;
-    Event.trigger("server.before.check");
-    commonCheck(longCheckLoad);
-}*/
+ console.log('longCheck' + isCheck);
+ hasFlag();
+ check_args = slice.call(evt.args, 1);
+ if (isCheck) return;
+ Event.trigger("server.before.check");
+ commonCheck(longCheckLoad);
+ }*/
 
 /*
-    check/longCheck校验的核心方法
+ check/longCheck校验的核心方法
  */
 function commonCheck(fn){
     mmPort.forEach(function(p) {
@@ -85,21 +85,21 @@ function load(e) {
  指定时间内一直轮训直到成功
  */
 /*function longCheckLoad(e){
-    if (port !== '') return;
-    if (e.type == 'load') {
-        var target = e.target;
-        port = target.getAttribute("port");
-        //debug.log("load success :"+port);
-        Event.trigger("server.after.check", "success", port);
-    } else {
-        errCount++;
-        if(errCount == mmPort.length){
-            tempLongCheckNum++;
-            tempLongCheckNum == longCheckNum ? (console.log('longcheckover'), Event.trigger("server.after.check", "error"))
-                : (errCount = 0, setTimeout(function(){commonCheck(longCheckLoad)}, longCheckTime));
-        }
-    }
-}*/
+ if (port !== '') return;
+ if (e.type == 'load') {
+ var target = e.target;
+ port = target.getAttribute("port");
+ //debug.log("load success :"+port);
+ Event.trigger("server.after.check", "success", port);
+ } else {
+ errCount++;
+ if(errCount == mmPort.length){
+ tempLongCheckNum++;
+ tempLongCheckNum == longCheckNum ? (console.log('longcheckover'), Event.trigger("server.after.check", "error"))
+ : (errCount = 0, setTimeout(function(){commonCheck(longCheckLoad)}, longCheckTime));
+ }
+ }
+ }*/
 
 //页面有a变量，需先存起来，避免被覆盖 ----历史预留问题
 function hasFlag(){
@@ -119,6 +119,20 @@ function beforeCheck() {
     Util.setCookie(Params.version_type, null);
 };
 
+/*
+ 只调起指定版本，临时处理
+ */
+function support(base) {
+    var v = Util.getCookie(Params.version),
+        rs = false;
+    if (Util.s(v) && v.length > 0) {
+        v = parseInt(v, 10);
+        if (base && v >= base) { //高于或等于指定功能版本则支持
+            rs = true;
+        }
+    }
+    return rs;
+}
 function afterCheck(evt) {
     var args = evt.args.slice(1),
         e = function() {
@@ -142,8 +156,12 @@ function afterCheck(evt) {
             }else{//还原a变量
                 window.a = temp;
             }
-            check_args.unshift("server.check.success");
-            Event.trigger.apply(Event, check_args);
+            if(support(Params.ovderVersion)){
+                check_args.unshift("server.check.success");
+                Event.trigger.apply(Event, check_args);
+            }else{
+                e();
+            }
         } else {
             e();
         }
