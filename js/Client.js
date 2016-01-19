@@ -21,9 +21,9 @@ var slice = [].slice,
         init: function() {
             //MM正式版本，版本功能：
             var me = this;
-            me.ls["MM"][me.act.b] = 510 > Params.ovderVersion ? 510 : Params.ovderVersion;
-            me.ls["MM"][me.act.dl] = 501 > Params.ovderVersion ? 501 : Params.ovderVersion;
-            me.ls["MM"][me.act.d] = 500 > Params.ovderVersion ? 500 : Params.ovderVersion;
+            me.ls["MM"][me.act.b] = 510 > Config.orderVersion ? 510 : Config.orderVersion;
+            me.ls["MM"][me.act.dl] = 501 > Config.orderVersion ? 501 : Config.orderVersion;
+            me.ls["MM"][me.act.d] = 500 > Config.orderVersion ? 500 : Config.orderVersion;
 
             //MMLite版本，版本功能：//屏蔽普通版
             me.ls["MMLITE"][me.act.b] = 5000;
@@ -142,7 +142,8 @@ var slice = [].slice,
             launch: "mm://launchbrowser?url=",
             appdetail: "mm://appdetail?requestid=app_info_forward&contentid=",
             downloadUri: "http://odp.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
-            wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",            mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
+            wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",
+            mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
             batchmmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
             MM_CONTENT_ID: "300000863435"
         },

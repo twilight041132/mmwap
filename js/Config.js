@@ -12,4 +12,6 @@ module.exports = {
     onIntent: true, //开启intent调用
     //	reCall:2000,//端口激活失败，通过intent调用，指定reCall时间重新激活接口
     //	lockTime:2000 //MM唤起加锁时间，避免短时间重复唤起
+    orderVersion: 500,  //配置调起指定MM版本
+    useGuid: !1 //是否加引导
 };

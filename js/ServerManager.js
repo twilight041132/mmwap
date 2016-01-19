@@ -4,7 +4,8 @@
  */
 var Event = require('./Event'),
     Params = require('./Params'),
-    Util = require('./Util');
+    Util = require('./Util'),
+    Config = require('./Config');
 
 var isCheck = false,
     port = '',//端口加载成功时记录
@@ -156,7 +157,7 @@ function afterCheck(evt) {
             }else{//还原a变量
                 window.a = temp;
             }
-            if(support(Params.ovderVersion)){
+            if(support(Config.orderVersion)){
                 check_args.unshift("server.check.success");
                 Event.trigger.apply(Event, check_args);
             }else{
