@@ -7,7 +7,8 @@ var Event = require('./Event'),
     ServerManager = require('./ServerManager'),
     Dialog = require('./Dialog'),
     Config = require('./Config'),
-    slice = [].slice;
+    slice = [].slice,
+    toString = Object.prototype.toString;
 
 //功能检测
 if (!Function.prototype.bind) {
@@ -24,6 +25,14 @@ if (!Function.prototype.bind) {
         bound.prototype = new nop();
 
         return bound
+    }
+}
+
+function ofType(obj){
+    return {
+        f: toString.call(obj) === "[object Function]",
+        o: toString.call(obj) === "[object Object]",
+        a: toString.call(obj) === "[object Array]",
     }
 }
 
@@ -44,6 +53,7 @@ ServerManager.init();
  * UC二次校验成功，不二次打开页面
  */
 Event.on("server.check.success", function(evt) {
+    console.log('success');
     var args = evt.args.slice(1);
     var method = args&&args[0]||'';
     if(method == "downloadmm"){//二次激活成功时
@@ -54,16 +64,15 @@ Event.on("server.check.success", function(evt) {
 Event.on("server.check.error", function(evt) {
     var args = slice.call(evt.args, 1);
     var method = args && args[0] || '';
-
-    if(method !== "downloadmm"){//二次激活失败时，直接下载mm,不走error流程
+    if(method !== "downloadmm"){//第一次激活失败，走二次激活流程；第二次激活失败method=="downloadmm"，直接下载mm,不走error流程
         args.unshift("error");//调用error方法，走二次激活流程
-    }else {
+    }/*else { //放入error流程判断
         //如果是open方法(type=false)，二次激活失败不走MM下载流程
         var origMethod = args[1];
         if (args.length === 4 && origMethod === 'open' && !args[3] ){
             return;
         }
-    }
+    }*/
 
 
     Client.execute.apply(Client, args);
@@ -142,15 +151,27 @@ function init(context){
             }
         },
         set: function(key, value) {
-            var def = Config;
+            var def = Config, oldValue;
             if (key in def) {
-                def[key] = value;
+                oldValue = def[key];
+                if(ofType(oldValue).f){
+                    def[key](value);
+                }else{
+                    def[key] = value;
+                }
             }
         },
         get: function(key) {
-            var def = Config;
+            var def = Config, value;
             if (key in def) {
-                return def[key];
+                value = def[key];
+                if(ofType(value).f && key === 'callOnlyVersion'){
+                    return {
+                        version_reg: Config.version_reg,
+                        version_prefix: Config.version_prefix
+                    }
+                }
+                return value;
             }
         },
         init: function(params) {
@@ -162,6 +183,17 @@ function init(context){
                 if (prop in params) {
                     def[prop] = params[prop]
                 }
+            }
+        },
+        error: function(fn){
+            if(ofType(fn).f){
+                var cb = function(evt){
+                    var args = slice.call(evt.args, 1);
+                    var method = args && args[0] || '';
+                    console.log(args);
+                    fn.apply(this, arguments);
+                };
+                Event.on("server.over.error", cb);
             }
         }
     }
