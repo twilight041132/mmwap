@@ -160,6 +160,7 @@ function init(context){
                     def[key] = value;
                 }
             }
+            return this;
         },
         get: function(key) {
             var def = Config, value;
