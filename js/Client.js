@@ -14,21 +14,30 @@ var slice = [].slice,
             dl: 'download', //单应用下载
             d: 'detail' //详情
         },
-        ls: {
-            "MM": {},
-            "MMLITE": {}
-        },
+        ls: {},
         init: function() {
             //MM正式版本，版本功能：
             var me = this;
-            me.ls["MM"][me.act.b] = 510;
+/*            me.ls["MM"][me.act.b] = 510;
             me.ls["MM"][me.act.dl] = 501;
-            me.ls["MM"][me.act.d] = 500;
+            me.ls["MM"][me.act.d] = 500;*/
+            me.setVersionSupport('MM', [510, 501, 500]);
 
             //MMLite版本，版本功能：
-            me.ls["MMLITE"][me.act.b] = 200;
+/*            me.ls["MMLITE"][me.act.b] = 200;
             me.ls["MMLITE"][me.act.dl] = 200;
-            me.ls["MMLITE"][me.act.d] = 200;
+            me.ls["MMLITE"][me.act.d] = 200;*/
+            me.setVersionSupport('MMLITE', [200, 200, 200]);
+
+            //MMOpen公开版，版本功能：
+            me.setVersionSupport('MMOPEN', [100, 100, 100]);
+        },
+        setVersionSupport: function(type, varr){
+            var me = this;
+            var obj = me.ls[type] || (me.ls[type] = {});
+            obj[me.act.b] = varr[0];
+            obj[me.act.dl] = varr[1];
+            obj[me.act.d] = varr[2];
         },
         support: function(type) {
             var me = this,
@@ -142,7 +151,8 @@ var slice = [].slice,
             launch: "mm://launchbrowser?url=",
             appdetail: "mm://appdetail?requestid=app_info_forward&contentid=",
             downloadUri: "http://odp.mmarket.com/t.do?requestid=app_order&goodsid=999100008100930100001752138{contentid}&payMode=1",
-            wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",
+            /*wetchartmm:应用宝下载地址，移到config做成可配置*/
+            //wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",
             mmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-999100008100930100001752138{contentid}-180.apk",
             batchmmrelaapp: "http://zjw.mmarket.com/mmapk/{channelid}/mmarket-{contentid}-180.apk",
             MM_CONTENT_ID: "300000863435"
@@ -282,28 +292,34 @@ var slice = [].slice,
                 //timeout = 900,
                 args = slice.call(arguments);
             var m = args[0];
-            var is_alert = m === 'open' && !args[2];
+            /*open 打开详情是否下载MM*/
+            var is_alert = !(m === 'open' && !args[2]);
             //alert('222')
-            //open 如果是静默打开，微信不弹出提示check=false
+            //open 如果是静默打开，微信不弹出提示check=false,并且不调起错误事件
             if (b.isWechat()) {
-                if(!is_alert){
+                if(is_alert){
                     var dl = function() {
-                        me.downloadApp(reqUrl.wetchartmm);
+                        me.downloadApp(Config.wetchartmm);
                     };
-                    Dialog.one("dialog.after.show", function() {
-                        Dialog.one("dialog.res.save", dl)
-                    });
-                    var flag = (args[0] === 'detail' || args[0] === 'open') ? 'detail' : 'download';
-                    Dialog.show({
-                        type: "weixin",
-                        flag: flag
-                    })
+                    if(Config.useGuide){
+                        Dialog.one("dialog.after.show", function() {
+                            Dialog.one("dialog.res.save", dl)
+                        });
+                        var flag = (args[0] === 'detail' || args[0] === 'open') ? 'detail' : 'download';
+                        Dialog.show({
+                            type: "weixin",
+                            flag: flag
+                        })
+                    }else{
+                        dl();
+                    }
+                    Event.trigger("server.over.error", m);/*检测失败，流程结束*/
                 }
-            } else if (!canIntent) {
+            } else if (!canIntent && is_alert) {
                 me.downloadmm.apply(me, args);
             } else {
                 var t = Date.now(),
-                    needCheckAgain = m != 'open' && m != 'detail';
+                    needCheckAgain = m != 'open' && m != 'detail';/*打开页面，调起MM之后就会打开；下载的则需要再调用下载*/
                     //args = slice.call(arguments);
                 if(m === 'open'){
                     var url = args[1];
@@ -344,7 +360,7 @@ var slice = [].slice,
                             if (!t || e - t < timeout + 200) {//是打开页面的，判断调起失败，直接下载MM,排除不需要下载MM的（is_alert)
                                 needCheckAgain ?  (
                                     cb()
-                                ) : !is_alert && me.downloadmm.apply(me, args);
+                                ) : is_alert && me.downloadmm.apply(me, args);
                             }else if(needCheckAgain){//成功调起，如果是非详情的，需要做二次调起，因为scheme的方式没有直接下载应用
                                 cb();
                             }
@@ -362,6 +378,10 @@ var slice = [].slice,
                 ids = args && args[0] || '',
                 bs = b.bs(),
                 longFileNameAccept = b.longFileNameAccept();
+            Event.trigger("server.over.error", method);/*检测失败，流程结束*/
+            if(!Config.downloadmm){
+                return;
+            }
             if (!!method) {
                 var type = (function() {
                     var t = "";
@@ -402,21 +422,23 @@ var slice = [].slice,
                         })
                     }, 1000)
                 }*/
-                var flag = (type == v.act.d || type == 'open' ) ? 'detail' : 'download';
-                var gargs = slice.call(arguments);
-                gargs.unshift("server.check.start");
-                var save = function() {
-                    Event.trigger.apply(Event, gargs);
-                };
-                setTimeout(function() {
-                    Dialog.one("dialog.after.show", function() {
-                        Dialog.one("dialog.res.save", save)
-                    });
-                    Dialog.show({
-                        type: "guid",
-                        flag: flag
-                    })
-                }, 1000)
+                if(Config.useGuide){
+                    var flag = (type == v.act.d || type == 'open' ) ? 'detail' : 'download';
+                    var gargs = slice.call(arguments);
+                    gargs.unshift("server.check.start");
+                    var save = function() {
+                        Event.trigger.apply(Event, gargs);
+                    };
+                    setTimeout(function() {
+                        Dialog.one("dialog.after.show", function() {
+                            Dialog.one("dialog.res.save", save)
+                        });
+                        Dialog.show({
+                            type: "guid",
+                            flag: flag
+                        })
+                    }, 1000)
+                }
             }
         },
         getMMUrl: function(type) {

@@ -4,14 +4,16 @@
  */
 var Event = require('./Event'),
     Params = require('./Params'),
-    Util = require('./Util');
+    Util = require('./Util'),
+    Config = require('./Config');
 
 var isCheck = false,
     port = '',//端口加载成功时记录
     mmPort = [9817, 19817, 29817, 39817, 49817, 59817],
     versionUrl = Params.versionUrl,
     errCount = 0, //已检测失败端口数
-    version_reg = /^(MMLite|MM)[0-9]+(\.[0-9]*|$)?(\.[0-9]*|$)?/i,
+/*    version_reg = /^(MMLite|MM|MMOpen)[0-9]+(\.[0-9]*|$)?(\.[0-9]*|$)?/i,
+    version_prefix = /(MMLite|MM|MMOpen)/i,*/
     slice = [].slice,
     check_args = [], //服务端校验传入的参数;
     temp = null;
@@ -135,40 +137,47 @@ function afterCheck(evt) {
         Util.setCookie(Params.port, args[1]);
         //历史问题，客户端连接校验直接返回了全局变量a，会有覆盖页面变量的风险
         if (typeof window.a != 'undefined' && typeof window.a.appname != 'undefined') {
-            setVersion(window.a);
+            var res = setVersion(window.a);
             //页面本来没有定义a变量，删除
             if(temp === null){
                 delete window.a;
             }else{//还原a变量
                 window.a = temp;
             }
-            check_args.unshift("server.check.success");
-            Event.trigger.apply(Event, check_args);
-        } else {
+            if(res){
+                check_args.unshift("server.check.success");
+                Event.trigger.apply(Event, check_args);
+                return;
+            }
+        } /*else {
             e();
-        }
-    } else {
+        }*/
+    } /*else {
         e();
-    }
+    }*/
+    e(); /*socket请求失败，或者版本对不上（MM|MMLite|MMOpen*/
 };
 
 function setVersion(a) {
     var appname = a.appname;
+    var res = 0;
     if (appname && appname.length > 0) {
-        var v = appname.match(version_reg);
+        var v = appname.match(Config.version_reg);
         if (!!v) {
             //版本标志：lite or normal
             var vtype = v[1] || 'MM';
             Util.setCookie(Params.version_type, vtype.toUpperCase());
 
-            v = v[0].replace(/(MMLite|MM)/i, '');
+            v = v[0].replace(Config.version_prefix, '');
             if (v.length > 0) {
                 var vs = v.replace(/\./g, '');
                 Util.setCookie(Params.version, vs || 0);
                 //debug.log(vtype.toUpperCase()+"  "+vs)
+                res = 1;
             }
         }
     }
+    return res;
 }
 
 

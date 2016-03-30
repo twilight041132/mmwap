@@ -2,6 +2,16 @@
  * Created by linxiaojie on 2015/10/14.
  */
 
+function newVersionReg(vStr){
+    return {
+        version_reg: new RegExp('^(' + vStr + ')[0-9]+(\\.[0-9]*|$)?(\\.[0-9]*|$)?', 'i'),
+        version_prefix: new RegExp('^(' + vStr + ')', 'i')
+    }
+}
+
+var versionRegStr  = 'MMLite|MMOpen|MM';
+var initVersionReg = newVersionReg(versionRegStr);
+
 //全局配置
 module.exports = {
     batchMaxApps: "15",
@@ -12,4 +22,22 @@ module.exports = {
     onIntent: true, //开启intent调用
     //	reCall:2000,//端口激活失败，通过intent调用，指定reCall时间重新激活接口
     //	lockTime:2000 //MM唤起加锁时间，避免短时间重复唤起
+    useGuide: 1, //是否加引导
+    wetchartmm: "http://a.app.qq.com/o/simple.jsp?pkgname=com.aspire.mm",//应用宝MM下载地址
+    /*指定版本类型调用,禁止使用无版本的scheme调用，只通过socket调用，此方式MM进程不在时无法调起*/
+    callOnlyVersion: function(vStr){/*'MMLite|MM|MMOpen'*/
+        var me = this;
+        me.onIntent = false;
+        var attr = vStr.split('|'), i = 0, l = attr.length;
+        attr.sort(function(a, b){
+            return b.length - a.length;
+        });
+        vStr = attr.length > 0 ?  attr.join('|') : attr[0];
+        var v = newVersionReg(vStr);
+        me.version_reg = v.version_reg;
+        me.version_prefix = v.version_prefix;
+    },
+    version_reg: initVersionReg.version_reg,
+    version_prefix: initVersionReg.version_prefix,
+    downloadmm: 1
 };

@@ -512,6 +512,7 @@
 			<a class='app-btn' href="javascript:;" onclick="mm.download(300008838917)">
 				下载
 			</a>
+			<a href="javascript:void(0)" onclick = "mm.open('indx.html', false)">静默打开</a>
 		</div>
 		<br />
 		<br />
@@ -618,6 +619,12 @@
 				els[i].checked = type;
 			}
 		}
+		mm.error(function(){
+			alert('调起失败')
+		});
+/*		mm.set('useGuide', 0);
+		mm.set('downloadmm', 0);*/
+/*		mm.set('callOnlyVersion', 'MMOpen');*/
 	})();
 	
 </script>
