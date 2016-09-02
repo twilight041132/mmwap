@@ -30,7 +30,8 @@ Wap环境调起MM，使用场景：
     * useGuide： 是否允许展示用户引导弹窗，默认允许，默认值为1； 配置0，可关闭引导，关闭引导之后程序直接做MM下载或跳转应用宝。
     * wetchartmm： 配置微信下载MM的应用宝地址。
     * downloadmm： 调起失败是否下载MM，默认下载，如不允许下载，配置为0。
-    * callOnlyVersion： 配置检查的MM版本，如果检查失败会使用schema调起，默认值（'MM|MMLite|MMOpen');
+    * callOnlyVersion： 配置检查的MM版本，~~如果检查失败会使用schema调起~~ 强制不使用schema调起，默认值（'MM|MMLite|MMOpen');
+    * setVersionLimit: 配置检查的应用版本号，强制不使用schema调起
 
     eg:配置只调起MM版本，不使用无版本的schema调起
 
