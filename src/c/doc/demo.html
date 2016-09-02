@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8 "/>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>WEB调起客户端下载DEMO</title>
-		<script src="../mmapp.js" tye" content="text/html; charset=UTF-8 "/>
+		<script src="../mmapp.js"/>
 		<meta name="viewport" contpe="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 		*{margin:0;padding:0}
@@ -622,9 +622,8 @@
 		mm.error(function(){
 			alert('调起失败')
 		});
-/*		mm.set('useGuide', 0);
-		mm.set('downloadmm', 0);*/
-/*		mm.set('callOnlyVersion', 'MMOpen');*/
+		mm.set('setVersionLimit', '500');
+		mm.set('callOnlyVersion', 'MMOpen');
 	})();
 	
 </script>

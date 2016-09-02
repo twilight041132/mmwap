@@ -11,7 +11,7 @@ function newVersionReg(vStr){
 
 var versionRegStr  = 'MMLite|MMOpen|MM';
 var initVersionReg = newVersionReg(versionRegStr);
-
+var versionCode = null
 //全局配置
 module.exports = {
     batchMaxApps: "15",
@@ -37,7 +37,22 @@ module.exports = {
         me.version_reg = v.version_reg;
         me.version_prefix = v.version_prefix;
     },
-    version_reg: initVersionReg.version_reg,
-    version_prefix: initVersionReg.version_prefix,
+    setVersionLimit: function(v){
+        if(!/^\d+$/g.test(v)){
+            throw new Error('参数只能为数字')
+        }
+        var me = this;
+        me.onIntent = false;
+        versionCode = v
+    },
+    /*版本号限制，如果配置则强制不使用scheme调起*/
+    versionCode: function(){
+        return versionCode
+    },
+    versionReg: function(){
+        return initVersionReg
+    },
+/*    version_reg: initVersionReg.version_reg,
+    version_prefix: initVersionReg.version_prefix,*/
     downloadmm: 1
 };

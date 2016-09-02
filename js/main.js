@@ -53,7 +53,7 @@ ServerManager.init();
  * UC二次校验成功，不二次打开页面
  */
 Event.on("server.check.success", function(evt) {
-    console.log('success');
+    /*console.log('success');*/
     var args = evt.args.slice(1);
     var method = args&&args[0]||'';
     if(method == "downloadmm"){//二次激活成功时
@@ -166,11 +166,8 @@ function init(context){
             var def = Config, value;
             if (key in def) {
                 value = def[key];
-                if(ofType(value).f && key === 'callOnlyVersion'){
-                    return {
-                        version_reg: Config.version_reg,
-                        version_prefix: Config.version_prefix
-                    }
+                if(ofType(value).f){
+                    return value ()
                 }
                 return value;
             }

@@ -33,7 +33,7 @@ gulp.task('appServer',function(){
 
     browserSync.init(files, {
         server: {
-            baseDir: './src/c/doc'
+            baseDir: './src/c'
         }
     });
 });
