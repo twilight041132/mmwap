@@ -90,6 +90,9 @@ var slice = [].slice,
         isWechat: function() {
             return this.ua.match(/MicroMessenger/i) == "micromessenger" ? 1 : 0;
         },
+        isIOS: function(){
+          return /ios|ipad|iphone|ipod/i.test(this.ua)
+        },
         isQq: function() {
             return this.ua.match(/MQQBrowser/i) ? 1 : 0;
         },
@@ -462,5 +465,6 @@ module.exports = {
     execute: function(method) {
         var me = client;
         return me[method] && me[method].apply(me, slice.call(arguments, 1))
-    }
+    },
+    browserUtil: browserUtil
 };

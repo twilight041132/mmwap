@@ -28,6 +28,17 @@ if (!Function.prototype.bind) {
     }
 }
 
+/*新增函数aop*/
+Function.prototype.before = function (func){
+    var _self = this;
+    return function () {
+        if (func.apply(this, arguments) === false) {
+            return false
+        }
+        return _self.apply(this, arguments);
+    }
+}
+
 function ofType(obj){
     return {
         f: toString.call(obj) === "[object Function]",
@@ -195,6 +206,23 @@ function init(context){
             }
         }
     }
+
+    Util.each(['download', 'detail', 'open', 'batchDownload'], function (method) {
+        /*判断执行环境，如果是IOS则弹出响应提示*/
+        var browserUtil = Client.browserUtil,
+            ios = browserUtil.isIOS(),
+            weChat = browserUtil.isWechat();
+        context.mm[method] = context.mm[method].before(function () {
+            var type = weChat && ios ? 'ios-weixin' : ios ? 'ios' : ''
+            if (type !== '') {
+                Dialog.show({
+                    type: type
+                })
+                return false
+            }
+            return true
+        })
+    })
 }
 
 module.exports = {
