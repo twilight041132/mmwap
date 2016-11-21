@@ -252,6 +252,9 @@ var Dialog = {
         this.options.base = base;
     },
     addEvent: function(el, type, handle) {
+        if (!el) {
+            return
+        }
         if (el.addEventListener) {
             el.addEventListener(type, handle, false);
         } else if (el.attachEvent) {
