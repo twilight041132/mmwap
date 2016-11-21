@@ -170,7 +170,7 @@ var Dialog = {
             t = [toast];
         /*toast提示点击关闭*/
         if (me.options.type === 'ios-weixin' || me.options.type === 'ios') {
-            me.addEvent(toast, "touchend", function(e){
+            me.addEvent(toast, "click", function(e){
                 me.trigger("dialog.res.cancle");
                 me.destroy();
                 return false;

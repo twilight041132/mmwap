@@ -1,12 +1,48 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8 "/>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>WEB调起客户端下载DEMO</title>
-		<script src="../mmapp.js"/>
-		<meta name="viewport" contpe="text/javascript" charset="utf-8"></script>
-		<style type="text/css">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8 "/>
+	<title>WEB调起客户端下载DEMO</title>
+	<script>!function (n) {
+		var e = n.document, t = e.documentElement, dpr, scale;
+		var isAndroid = n.navigator.appVersion.match(/android/gi), isIPhone = n.navigator.appVersion.match(/iphone/gi), devicePixelRatio = n.devicePixelRatio;
+		if (isIPhone) {
+			if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)) {
+				dpr = 2
+			} else {
+				dpr = 1
+			}
+		} else {
+			dpr = 1
+		}
+		scale = 1 / dpr;
+		var metaEl = e.createElement("meta");
+		var scale = dpr === 1 ? 1 : 0.5;
+		metaEl.setAttribute("name", "viewport");
+		metaEl.setAttribute("content", "initial-scale=" + scale + ", maximum-scale=" + scale + ", minimum-scale=" + scale + ", user-scalable=no");
+		if (t.firstElementChild) {
+			t.firstElementChild.appendChild(metaEl)
+		} else {
+			var wrap = e.createElement("div");
+			wrap.appendChild(metaEl);
+			e.write(wrap.innerHTML)
+		}
+		var i = 1440, d = i / 200, rem, o = "orientationchange" in n ? "orientationchange" : "resize", a = function () {
+			var n = t.clientWidth || 320;
+			n > i && (n = i), t.style.fontSize = (rem = n / d) + "px"
+		};
+		n.px2rem = function (px) {
+			var v = parseFloat(px);
+			return v / rem
+		};
+		n.rem2px = function (r) {
+			var v = parseFloat(r);
+			return rem * v
+		};
+		e.addEventListener && (n.addEventListener(o, a, !1), e.addEventListener("DOMContentLoaded", a, !1))
+	}(window);</script>
+	<script src="../mmapp.js"></script>
+	<style type="text/css">
 		*{margin:0;padding:0}
 		body{
 			background: #F4F4F4;
@@ -16,10 +52,11 @@
 			margin: 2%;
 		}
 		.app-item{
-       		display: -webkit-box;
-		    display:    -moz-box;
-		    display:         box;
-		    display: -ms-flexbox;
+			font-size: 20px;
+			display: -webkit-box;
+			display:    -moz-box;
+			display:         box;
+			display: -ms-flexbox;
 			-webkit-box-pack: justify;
 			-moz-box-pack: justify;
 			-ms-box-pack:justify;
@@ -34,17 +71,17 @@
 		}
 		.app-item+.app-item{
 			margin-top: 2%;
-			
+
 		}
 		.app-detail{
-       		display: -webkit-box;
-		    display:    -moz-box;
-		    display:         box;
-		    display: -ms-flexbox;
-		    display: -webkit-flex;
-		    display:    -moz-flex;
-		    display:     -ms-flex;    
-		    display:         flex;
+			display: -webkit-box;
+			display:    -moz-box;
+			display:         box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display:    -moz-flex;
+			display:     -ms-flex;
+			display:         flex;
 		}
 		.app-detail img{
 			width:60px;
@@ -67,29 +104,29 @@
 			color:#000000
 		}
 		.app-item-check{
-       		display: -webkit-box;
-		    display:    -moz-box;
-		    display:         box;
-		    display: -ms-flexbox;
+			display: -webkit-box;
+			display:    -moz-box;
+			display:         box;
+			display: -ms-flexbox;
 			-webkit-box-pack: center;
 			-moz-box-pack: center;
 			-ms-box-pack:center;
 			box-pack:center;
-		    -webkit-box-orient: vertical;
-	       -moz-box-orient: vertical;
-	        -ms-box-orient: vertical;
-            box-orient: vertical;
+			-webkit-box-orient: vertical;
+		   -moz-box-orient: vertical;
+			-ms-box-orient: vertical;
+			box-orient: vertical;
 			padding-right: 20px;
 		}
 		.foot{
 			position:fixed;
 			bottom: 0;
 			left:0;
-			width: 100%;       		
+			width: 100%;
 			display: -webkit-box;
-		    display:    -moz-box;
-		    display:         box;
-		    display: -ms-flexbox;
+			display:    -moz-box;
+			display:         box;
+			display: -ms-flexbox;
 			-webkit-box-pack: justify;
 			-moz-box-pack: justify;
 			-ms-box-pack:justify;
