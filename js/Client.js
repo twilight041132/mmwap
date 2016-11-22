@@ -449,11 +449,12 @@ var slice = [].slice,
                 v = versionUtil,
                 reqUrl = me.reqUrl;
             //批量下载应用 mm下载路径
-            if (typeof type != "undefined" && type == v.act.b) {
+            /*if (typeof type != "undefined" && type == v.act.b) {
                 return reqUrl.batchmmrelaapp.replace("{channelid}", Config["channelid"]);
             } else { //单应用下载 mm下载路径
                 return reqUrl.mmrelaapp.replace("{channelid}", Config["channelid"]);
-            }
+            }*/
+            return reqUrl.batchmmrelaapp.replace("{channelid}", Config["channelid"]);
         },
         none: function(){}//什么都不做，空的调用
 
