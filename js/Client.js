@@ -360,7 +360,7 @@ var slice = [].slice,
                         if(isUq){// UC或QQ走二次激活流程
                             cb();
                         }else{
-                            if (!t || e - t < timeout + 200) {//是打开页面的，判断调起失败，直接下载MM,排除不需要下载MM的（is_alert)
+                            if (!t || (e - t < timeout + 200)) {//是打开页面的，判断调起失败，直接下载MM,排除不需要下载MM的（is_alert)
                                 needCheckAgain ?  (
                                     cb()
                                 ) : is_alert && me.downloadmm.apply(me, args);
