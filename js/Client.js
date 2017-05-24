@@ -314,10 +314,10 @@ var slice = [].slice,
                             type: "weixin",
                             flag: flag
                         })
+                        Event.trigger("server.over.error", m);/*检测失败，流程结束*/
                     }else{
                         dl();
                     }
-                    Event.trigger("server.over.error", m);/*检测失败，流程结束*/
                 }
             } else if (canIntent) {
                 var t = Date.now(),
@@ -373,6 +373,8 @@ var slice = [].slice,
             } else {
                 if (!silent) {
                     me.downloadmm.apply(me, args)
+                } else {
+                    Event.trigger("server.over.error", m);/*检测失败，流程结束*/
                 }
             }
         },
