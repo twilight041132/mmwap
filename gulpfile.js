@@ -9,7 +9,10 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
     browserify = require('browserify'),
-    browserSync = require('browser-sync');
+    browserSync = require('browser-sync'),
+  header = require('gulp-header');
+var pkg =require('./package.json');
+var banner =['/**',' * <%= pkg.name %> - <%= pkg.description %>',' * @version v<%= pkg.version %>',' * @link <%= pkg.homepage %>',' * @license <%= pkg.license %>',' */',''].join('\n');
 
 
 
@@ -18,6 +21,7 @@ gulp.task('build',function(){
         .pipe(source('mmapp.js'))
         .pipe(buffer())
         .pipe(uglify())
+        .pipe(header(banner,{ pkg : pkg }))
         .pipe(gulp.dest('./src/c'));
 });
 
@@ -68,6 +72,7 @@ gulp.task('archive',function(cb){
         cb
     );
 });
+
 
 
 gulp.task('default', ['build', 'watch']);
