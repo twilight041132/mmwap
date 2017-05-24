@@ -546,7 +546,7 @@
 				</div>
 			</a>
 			<div style="width:4px;"></div>
-			<a class='app-btn' href="javascript:;" onclick="mm.download(300008838917)">
+			<a class='app-btn' href="javascript:;" onclick="mm.download(300008838917, false)">
 				下载
 			</a>
 			<a href="javascript:void(0)" onclick = "mm.open('indx.html', false)">静默打开</a>
@@ -660,8 +660,8 @@
 			alert('调起失败')
 		});
 		mm.set('setVersionLimit', '500');
-		mm.set('callOnlyVersion', 'MMOpen');
-		mm.open('www.baidu.com', false)
+		mm.set('onIntent', true);
+		mm.open('www.baidu.com', false);
 	})();
 	
 </script>

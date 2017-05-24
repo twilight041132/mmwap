@@ -214,9 +214,11 @@ function init(context){
             weChat = browserUtil.isWechat();
         context.mm[method] = context.mm[method].before(function () {
             var type = weChat && ios ? 'ios-weixin' : ios ? 'ios' : ''
-            if (method == 'open' && arguments[1] !== undefined  && arguments[1] === false) {
+            /*设置是否静默模式*/
+            context.mm.set('errorSilent', arguments[1] === undefined ? false : !arguments[1])
+/*            if (method == 'open' && arguments[1] !== undefined  && arguments[1] === false) {
                 return false
-            }
+            }*/
             if (type !== '') {
                 Dialog.show({
                     type: type

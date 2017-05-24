@@ -46,9 +46,9 @@ Wap环境调起MM，使用场景：
 
 3. MM调起方法：
 
-    * mm.download(id) : 调起MM下载指定id的应用
-    * mm.detail(id): 调起MM打开指定id的应用详情
-    * mm.batchdownlaod(ids)： 调起MM批量下载指定的ID应用, ids为数组或字符串，字符串用“/”分隔应用ID。
+    * mm.download(id, check) : 调起MM下载指定id的应用；check为false,静默调起，不做MM下载；默认为true,调起失败，走MM下载流程。
+    * mm.detail(id, check): 调起MM打开指定id的应用详情；check为false,静默调起，不做MM下载；默认为true,调起失败，走MM下载流程。
+    * mm.batchdownlaod(ids, check)： 调起MM批量下载指定的ID应用, ids为数组或字符串，字符串用“/”分隔应用ID；check为false,静默调起，不做MM下载；默认为true,调起失败，走MM下载流程。。
     * mm.open(url, check): 调用MM打开指定URL地址，可配置是否调起失败时是否做MM下载流程。check为false,静默调起，不做MM下载；默认为true,调起失败，走MM下载流程。
     * mm.error(cb):　MM调起失败回调cb进行处理
 

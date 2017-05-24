@@ -293,14 +293,15 @@ var slice = [].slice,
                 isUq = isUc || b.isQq() ?  1 : 0,
                 timeout = isUc ?  2000 : 900,
                 //timeout = 900,
-                args = slice.call(arguments);
+                args = slice.call(arguments),
+                silent = Config.errorSilent;
             var m = args[0];
             /*open 打开详情是否下载MM*/
-            var is_alert = !(m === 'open' && !args[2]);
+            //var is_alert = !(m === 'open' && !args[2]);
             //alert('222')
             //open 如果是静默打开，微信不弹出提示check=false,并且不调起错误事件
             if (b.isWechat()) {
-                if(is_alert){
+                if(!silent){
                     var dl = function() {
                         me.downloadApp(Config.wetchartmm);
                     };
@@ -318,9 +319,7 @@ var slice = [].slice,
                     }
                     Event.trigger("server.over.error", m);/*检测失败，流程结束*/
                 }
-            } else if (!canIntent && is_alert) {
-                me.downloadmm.apply(me, args);
-            } else {
+            } else if (canIntent) {
                 var t = Date.now(),
                     needCheckAgain = m != 'open' && m != 'detail';/*打开页面，调起MM之后就会打开；下载的则需要再调用下载*/
                     //args = slice.call(arguments);
@@ -363,7 +362,7 @@ var slice = [].slice,
                             if (!t || (e - t < timeout + 200)) {//是打开页面的，判断调起失败，直接下载MM,排除不需要下载MM的（is_alert)
                                 needCheckAgain ?  (
                                     cb()
-                                ) : is_alert && me.downloadmm.apply(me, args);
+                                ) : !silent && me.downloadmm.apply(me, args);
                             }else if(needCheckAgain){//成功调起，如果是非详情的，需要做二次调起，因为scheme的方式没有直接下载应用
                                 cb();
                             }
@@ -371,6 +370,10 @@ var slice = [].slice,
                     }, timeout);
                 /*}*/
 
+            } else {
+                if (!silent) {
+                    me.downloadmm.apply(me, args)
+                }
             }
         },
         downloadmm: function(method) {
