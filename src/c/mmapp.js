@@ -1,6 +1,6 @@
 /**
  * mmwap - web page call for mm
- * @version v1.0.1
+ * @version v1.0.2
  * @link https://github.com/lilJay-lin/mmwap#readme
  * @license ISC
  */
