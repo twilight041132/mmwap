@@ -20,6 +20,7 @@ module.exports = {
     showtitle: true,
     channelid: '5410093632',
     onIntent: true, //开启intent调用
+    errorSilent: false, //调起失败是否静默，静默不做MM下载
     //	reCall:2000,//端口激活失败，通过intent调用，指定reCall时间重新激活接口
     //	lockTime:2000 //MM唤起加锁时间，避免短时间重复唤起
     useGuide: 1, //是否加引导
