@@ -1,76 +1,76 @@
 # mmwap
 
-Wap��������MM��ʹ�ó�����
+Wap环境调起MM，使用场景：
 
-1. ���������������MM����ҳ������APP����������APP
-2. ΢��ҳ����MM����ҳ������APP����������APP
+1. 第三方浏览器调起MM详情页、下载APP、批量下载APP
+2. 微信页调起MM详情页、下载APP、批量下载APP
 
-##ʹ�÷���
+## 使用方法
 
-1. ���ؿ���
+1. 本地开发
 
-    ��װ����<code>npm install</code>
+    安装依赖<code>npm install</code>
     
-    �������벢Ԥ��<code> gulp preview </code>
+    启动编译并预览<code> gulp preview </code>
     
-    ���<code>gulp zip</code>
+    打包<code>gulp zip</code>
 
-2. ���ϲ���
+2. 线上部署
 
-    mmwap.js,mmwap.css ������ͬһĿ¼���
+    mmwap.js,mmwap.css 放置在同一目录层次
     
-    ����js`<script src='mmwap.js'></script>`
+    导入js`<script src='mmwap.js'></script>`
 
 ## API
 
-1. mm.set(key, value)������Ĭ��������ṩ����������
+1. mm.set(key, value)：设置默认配置项，提供以下配置项
 
-    * channelid�� �����ţ�Ĭ�������ţ�5410093632����Ĭ�����ص�MM��������
-    * onIntent�� �����Ƿ�����schema����schema����������MM�汾���ͣ�����ߵ�����ʡ�Ĭ�ϴ򿪣�Ĭ��ֵΪtrue
-    * useGuide�� �Ƿ�����չʾ�û�����������Ĭ��������Ĭ��ֵΪ1�� ����0���ɹر��������ر�����֮�����ֱ����MM���ػ���תӦ�ñ���
-    * wetchartmm�� ����΢������MM��Ӧ�ñ���ַ��
-    * downloadmm�� ����ʧ���Ƿ�����MM��Ĭ�����أ��粻�������أ�����Ϊ0��
-    * callOnlyVersion�� ���ü���MM�汾��~~������ʧ�ܻ�ʹ��schema����~~ ǿ�Ʋ�ʹ��schema����Ĭ��ֵ��'MM|MMLite|MMOpen');
-    * setVersionLimit: ���ü���Ӧ�ð汾�ţ�ǿ�Ʋ�ʹ��schema����
+    * channelid： 渠道号，默认渠道号（5410093632），默认下载的MM渠道包。
+    * onIntent： 配置是否允许schema调起，schema调起不能区分MM版本类型，能提高调起概率。默认打开，默认值为true
+    * useGuide： 是否允许展示用户引导弹窗，默认允许，默认值为1； 配置0，可关闭引导，关闭引导之后程序直接做MM下载或跳转应用宝。
+    * wetchartmm： 配置微信下载MM的应用宝地址。
+    * downloadmm： 调起失败是否下载MM，默认下载，如不允许下载，配置为0。
+    * callOnlyVersion： 配置检查的MM版本，~~如果检查失败会使用schema调起~~ 强制不使用schema调起，默认值（'MM|MMLite|MMOpen');
+    * setVersionLimit: 配置检查的应用版本号，强制不使用schema调起
 
-    eg:����ֻ����MM�汾����ʹ���ް汾��schema����
+    eg:配置只调起MM版本，不使用无版本的schema调起
 
     `   mm.set('onIntent', false);
         mm.set('callOnlyVersion', 'MMOpen');`
 
-2. mm.get(key)����ȡ��ǰ������
+2. mm.get(key)：获取当前配置项
 
-    eg:��ȡ��ǰ���õ�������
+    eg:获取当前配置的渠道号
 
     `   mm.get('channelid');  `
 
-3. MM���𷽷���
+3. MM调起方法：
 
-    * mm.download(id) : ����MM����ָ��id��Ӧ��
-    * mm.detail(id): ����MM��ָ��id��Ӧ������
-    * mm.batchdownlaod(ids)�� ����MM��������ָ����IDӦ��, idsΪ������ַ������ַ����á�/���ָ�Ӧ��ID��
-    * mm.open(url, check): ����MM��ָ��URL��ַ���������Ƿ����ʧ��ʱ�Ƿ���MM�������̡�checkΪfalse,��Ĭ���𣬲���MM���أ�Ĭ��Ϊtrue,����ʧ�ܣ���MM�������̡�
-    * mm.error(cb):��MM����ʧ�ܻص�cb���д���
+    * mm.download(id) : 调起MM下载指定id的应用
+    * mm.detail(id): 调起MM打开指定id的应用详情
+    * mm.batchdownlaod(ids)： 调起MM批量下载指定的ID应用, ids为数组或字符串，字符串用“/”分隔应用ID。
+    * mm.open(url, check): 调用MM打开指定URL地址，可配置是否调起失败时是否做MM下载流程。check为false,静默调起，不做MM下载；默认为true,调起失败，走MM下载流程。
+    * mm.error(cb):　MM调起失败回调cb进行处理
 
-4. MM���𷽷���ͳһ�������̣�
+4. MM调起方法的统一处理流程：
 
-    <pre>1. �״μ��ʹ�ð汾��ص�socket���������ͨ��callOnlyVersion���ø���Ȥ�İ汾�����ж�MM�Ƿ񼤻ֻ��MM������ʱ����ܼ���ɹ���
-        1.1 ����ʧ�ܣ������峡�������μ����
-            1.1.1 ΢�ţ� ���������û���תӦ�ñ����ص�ַ����ͨ��useGuide�����Ƿ񵯴���
-            1.1.2 ��΢�ţ� �Ƿ�֧��schema����ͨ��onIntent���ã�,schema���ް汾״̬�ĵ���MM
-                1.1.2.1 ֧�֣�schema�����߶��μ������̣�����2��
-                1.1.2.2 ��֧�֣�ֱ������MM
-        1.2 ����ɹ��� ֱ�ӵ���MM����Ӧ���ܴ����ͳ���
-    2. ���μ�������ڲ�����
-        2.1 ����ʧ�ܣ� ����MM
-        2.2 ����ɹ��� ֱ�ӵ���MM����Ӧ���ܴ����ͳ���
+    <pre>1. 首次激活，使用版本相关的socket激活方法（可通过callOnlyVersion配置感兴趣的版本），判断MM是否激活（只有MM启动的时候才能激活成功）
+        1.1 激活失败，按具体场景做二次激活处理
+            1.1.1 微信： 弹窗引导用户跳转应用宝下载地址（可通过useGuide配置是否弹窗）
+            1.1.2 非微信： 是否支持schema调起（通过onIntent配置）,schema是无版本状态的调起MM
+                1.1.2.1 支持，schema调起，走二次激活流程（流程2）
+                1.1.2.2 不支持，直接下载MM
+        1.2 激活成功， 直接调起MM做相应功能处理和程序
+    2. 二次激活（程序内部调起）
+        2.1 激活失败， 下载MM
+        2.2 激活成功， 直接调起MM做相应功能处理和程序
     </pre>
     
 
-##ע��
+##注意
 
-��Ϊ΢�ŵĵ������غͲ�ͬ��������������Բ�ͬ�⣬�˰汾��WAP����ʵ���ϲ����ܱ�֤100%��ȷ�Ĵ����ص�������ر������¼���������Ҫע�⣺
+因为微信的调起拦截和不同浏览器环境兼容性不同意，此版本的WAP调起实际上并不能保证100%正确的处理回调结果。特别是以下几个流程需要注意：
 
-1. ΢�Ż�������MMɱ��֮���ǲ���ͨ����js���е���ģ���ͨ������Ӧ�ñ����ӽ�����ת
-2. ����������� MMɱ��֮��Ĭ����ͨ��schema����schema��������״̬���ģ�ǰ�˲��ܾܺ�ȷ���ж�����������ĵ������������ֻ��ǰ�˰����ض������ж��Ƿ���������Ϳ��ܻ�����Ѿ�����MM����ǰ��ҳ����Ȼ��ʾ����ʧ�ܵ������
+1. 微信环境调起：MM杀死之后，是不能通过此js进行调起的，可通过配置应用宝链接进行跳转
+2. 浏览器环境： MM杀死之后，默认是通过schema调起，schema调起是无状态化的，前端不能很精确的判断所有浏览器的调起情况，所以只能前端按照特定规则判断是否调起。这样就可能会出现已经调起MM，而前端页面依然提示调起失败的情况。
 
