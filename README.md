@@ -1,9 +1,18 @@
 # mmwap
 
-Wap环境调起MM，使用场景：
+wap调起jssdk
 
-1. 第三方浏览器调起MM详情页、下载APP、批量下载APP
-2. 微信页调起MM详情页、下载APP、批量下载APP
+1. Wap环境调起MM，使用场景：
+   1. 第三方浏览器调起MM应用来打开详情页、下载APP、批量下载APP
+   2. 微信页调起MM应用来打开详情页、下载APP、批量下载APP
+   
+2. 基本流程
+    MM客户端提供socket监听，页面通过jssdk调起客户端的时候，首先尝试socket去调起，
+    如果socket请求被客户端接收，则判断客户端存活，调用客户端接口进行页面打开，
+    应用下载等操作；如果socket不同，则页面通过scheme的方式打开客户端，判断是否打
+    开成功，如果成功则继续调用客户端的流程；如果上述两种方式都不同，则去下载MM应用包。
+
+
 
 ##使用方法
 
@@ -11,7 +20,7 @@ Wap环境调起MM，使用场景：
 
     安装依赖<code>npm install</code>
     
-    启动编译并预览<code> gulp preview </code>
+    启动编译并预览<code> gulp preview </code>， 预览地址`http://localhost:3000/doc/index.html`
     
     打包<code>gulp zip</code>
 
@@ -20,6 +29,8 @@ Wap环境调起MM，使用场景：
     mmwap.js,mmwap.css 放置在同一目录层次
     
     导入js`<script src='mmwap.js'></script>`
+    
+3. [DEMO](http://mmdm.aspire-tech.com/fx/wap/wap6.1/c/doc/index.html)
 
 ## API
 
